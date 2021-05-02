@@ -1,6 +1,6 @@
 public class Player
 {
-    private Winds winds;
+    private Winds wind;
     private TilesContainer mainTiles;
     private TilesContainer tripletTiles;
     private TilesContainer flowerTiles;
@@ -30,7 +30,7 @@ public class Player
     public void DrawStartingTiles(TileQueue tileQueue)
     {
         int count = 13;
-        if (winds == Winds.East)
+        if (wind == Winds.East)
         {
             count += 1;
         }
@@ -45,5 +45,14 @@ public class Player
     public TilesContainer GetFlowerTiles()
     {
         return flowerTiles;
+    }
+    public void DiscardTile(int index, TilesContainer discardedTilesContainer)
+    {
+        Tile toDiscard = mainTiles.RemoveTile(index);
+        discardedTilesContainer.Add(toDiscard);
+    }
+    public void SetWind(Winds wind)
+    {
+        this.wind = wind;
     }
 }

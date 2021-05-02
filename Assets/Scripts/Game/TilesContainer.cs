@@ -11,30 +11,15 @@ public class TilesContainer
     {
         tiles.Add(tile);
     }
-    public void Add(List<Tile> tiles)
-    {
-        tiles.AddRange(tiles);
-    }
-    public bool HasFlowers()
-    {
-        return tiles.Exists(tile => tile.IsFlower());
-    }
-    public List<Tile> RemoveFlowers()
-    {
-        List<Tile> flowers = new List<Tile>();
-        foreach (Tile tile in tiles)
-        {
-            if (tile.IsFlower())
-            {
-                flowers.Add(tile);
-            }
-        }
-        tiles.RemoveAll(tiles => tiles.IsFlower());
-        return flowers;
-    }
     public List<Tile> GetTiles()
     {
         return tiles;
+    }
+    public Tile RemoveTile(int index)
+    {
+        Tile toRemove = tiles[index];
+        tiles.Remove(toRemove);
+        return toRemove;
     }
     public void Sort()
     {

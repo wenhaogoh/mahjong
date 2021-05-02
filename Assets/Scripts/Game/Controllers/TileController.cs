@@ -17,4 +17,9 @@ public class TileController : MonoBehaviour
     {
 
     }
+    public void OnClick()
+    {
+        int index = transform.GetSiblingIndex();
+        GameStateController.instance.DiscardPlayerTile(index);
+    }
 }
