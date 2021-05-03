@@ -62,7 +62,7 @@ public class TileQueue
                     }
                     break;
                 case TileTypes.Flower:
-                    for (int i = 1; i <= 16; i++)
+                    for (int i = 1; i <= 20; i++) // Cat + Mouse + Rooster + Centipede + 4 * 4 Flowers
                     {
                         Tile flowerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
                         flowerTile.SetType(TileTypes.Flower);
@@ -71,7 +71,7 @@ public class TileQueue
                     }
                     break;
                 case TileTypes.Honour:
-                    for (int i = 1; i <= 28; i++)
+                    for (int i = 1; i <= 28; i++) // 4 * White Dragon + 4 * Red Dragon + 4 * Green Dragon + 4 * 4 Winds
                     {
                         Tile honourTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
                         honourTile.SetType(TileTypes.Honour);

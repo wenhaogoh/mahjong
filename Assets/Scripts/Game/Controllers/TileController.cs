@@ -19,7 +19,10 @@ public class TileController : MonoBehaviour
     }
     public void OnClick()
     {
-        int index = transform.GetSiblingIndex();
-        GameStateController.instance.DiscardPlayerTile(index);
+        if (GameStateController.instance.gameState == GameStates.PLAYER0_DISCARDING)
+        {
+            int index = transform.GetSiblingIndex();
+            GameStateController.instance.DiscardPlayerTile(index);
+        }
     }
 }

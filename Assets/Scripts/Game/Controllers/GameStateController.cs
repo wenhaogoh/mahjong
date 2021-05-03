@@ -1,13 +1,5 @@
 using UnityEngine;
 
-enum Directions
-{
-    East,
-    South,
-    West,
-    North
-}
-
 public class GameStateController : MonoBehaviour
 {
     public TilesContainerController playerMainTilesContainerController;
@@ -15,14 +7,17 @@ public class GameStateController : MonoBehaviour
     public TilesContainerController discardedTilesContainerController;
 
     public static GameStateController instance = null;
+    public GameStates gameState;
 
     private TileQueue tileQueue;
-    private static TilesContainer discardedTilesContainer;
+    private TilesContainer discardedTilesContainer;
 
     private static Player player;
     private Player opponent1; // Right
     private Player opponent2; // Top
     private Player opponent3; // Left
+
+    private TurnProcessor turnProcessor;
 
     void Awake()
     {
@@ -38,16 +33,7 @@ public class GameStateController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tileQueue = new TileQueue();
-        discardedTilesContainer = new TilesContainer();
-        player = new Player();
-        opponent1 = new Player();
-        opponent2 = new Player();
-        opponent3 = new Player();
-        player.DrawStartingTiles(tileQueue);
-        opponent1.DrawStartingTiles(tileQueue);
-        opponent2.DrawStartingTiles(tileQueue);
-        opponent3.DrawStartingTiles(tileQueue);
+        Setup();
         RefreshDisplays();
     }
     // Update is called once per frame
@@ -59,6 +45,22 @@ public class GameStateController : MonoBehaviour
     {
         player.DiscardTile(index, discardedTilesContainer);
         RefreshDisplays();
+        turnProcessor.Process(discardedTilesContainer.GetLastTile());
+    }
+    private void Setup()
+    {
+        tileQueue = new TileQueue();
+        discardedTilesContainer = new TilesContainer();
+        player = new Player(0);
+        opponent1 = new Player(1);
+        opponent2 = new Player(2);
+        opponent3 = new Player(3);
+        turnProcessor = new TurnProcessor(player, opponent1, opponent2, opponent3);
+        turnProcessor.SetWinds(player, Winds.East);
+        player.DrawStartingTiles(tileQueue);
+        opponent1.DrawStartingTiles(tileQueue);
+        opponent2.DrawStartingTiles(tileQueue);
+        opponent3.DrawStartingTiles(tileQueue);
     }
     private void DisplayPlayerMainTiles()
     {
@@ -77,9 +79,5 @@ public class GameStateController : MonoBehaviour
         DisplayPlayerMainTiles();
         DisplayPlayerFlowerTiles();
         DisplayDiscardedTiles();
-    }
-    private void SetPlayersWinds()
-    {
-
     }
 }

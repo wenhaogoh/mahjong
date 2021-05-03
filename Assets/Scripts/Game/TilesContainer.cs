@@ -25,4 +25,8 @@ public class TilesContainer
     {
         tiles.Sort();
     }
+    public Tile GetLastTile()
+    {
+        return tiles[tiles.Count - 1];
+    }
 }

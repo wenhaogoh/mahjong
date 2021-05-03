@@ -1,14 +1,16 @@
 public class Player
 {
+    private int id;
     private Winds wind;
     private TilesContainer mainTiles;
     private TilesContainer tripletTiles;
     private TilesContainer flowerTiles;
-    public Player()
+    public Player(int id)
     {
-        mainTiles = new TilesContainer();
-        tripletTiles = new TilesContainer();
-        flowerTiles = new TilesContainer();
+        this.id = id;
+        this.mainTiles = new TilesContainer();
+        this.tripletTiles = new TilesContainer();
+        this.flowerTiles = new TilesContainer();
     }
     public void DrawTile(TileQueue tileQueue)
     {
@@ -54,5 +56,13 @@ public class Player
     public void SetWind(Winds wind)
     {
         this.wind = wind;
+    }
+    public Winds GetWind()
+    {
+        return this.wind;
+    }
+    public int GetId()
+    {
+        return this.id;
     }
 }
