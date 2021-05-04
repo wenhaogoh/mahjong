@@ -37,6 +37,9 @@ public class Player
             count += 1;
         }
         DrawTiles(count, tileQueue);
+    }
+    public void SortTiles()
+    {
         mainTiles.Sort();
         flowerTiles.Sort();
     }
@@ -48,9 +51,9 @@ public class Player
     {
         return flowerTiles;
     }
-    public void DiscardTile(int index, TilesContainer discardedTilesContainer)
+    public void DiscardTile(int tileIndex, TilesContainer discardedTilesContainer)
     {
-        Tile toDiscard = mainTiles.RemoveTile(index);
+        Tile toDiscard = mainTiles.RemoveTile(tileIndex);
         discardedTilesContainer.Add(toDiscard);
     }
     public void SetWind(Winds wind)

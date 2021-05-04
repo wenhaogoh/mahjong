@@ -1,30 +1,51 @@
 using System;
 
-public static class Extensions
-{
-
-    public static T Next<T>(this T src) where T : struct
-    {
-        if (!typeof(T).IsEnum) throw new ArgumentException(String.Format("Argument {0} is not an Enum", typeof(T).FullName));
-
-        T[] Arr = (T[])Enum.GetValues(src.GetType());
-        int j = Array.IndexOf<T>(Arr, src) + 1;
-        return (Arr.Length == j) ? Arr[0] : Arr[j];
-    }
-}
-
 public class TurnProcessor
 {
+    private TileQueue tileQueue;
+    private TilesContainer discardedTilesContainer;
+    private RequestProcessor requestProcessor;
+    private Player player; // Bottom
+    private Player opponent1; // Right
+    private Player opponent2; // Top
+    private Player opponent3; // Left
     private Player[] players;
     private int currentTurnIndex;
-    public TurnProcessor(params Player[] players)
+
+    public void NewGame()
     {
-        this.players = players;
+        tileQueue = new TileQueue();
+        discardedTilesContainer = new TilesContainer();
+        requestProcessor = new RequestProcessor();
+        this.player = new Player(0);
+        this.opponent1 = new Player(1);
+        this.opponent2 = new Player(2);
+        this.opponent3 = new Player(3);
+        this.players = new Player[] { player, opponent1, opponent2, opponent3 };
+        player.DrawStartingTiles(tileQueue);
+        opponent1.DrawStartingTiles(tileQueue);
+        opponent2.DrawStartingTiles(tileQueue);
+        opponent3.DrawStartingTiles(tileQueue);
+        SetPlayerWinds(player, Winds.East);
+        GameStateController.instance.RefreshDisplays();
     }
-    /// <summary>
-    /// Sets the winds of all players in the queue using the supplied player as the reference point.
-    /// </summary>
-    public void SetWinds(Player player, Winds wind)
+    public void DiscardPlayerTile(int index)
+    {
+        DiscardTile(index, player.GetId());
+    }
+    public TilesContainer GetPlayerMainTiles()
+    {
+        return this.player.GetMainTiles();
+    }
+    public TilesContainer GetPlayerFlowerTiles()
+    {
+        return this.player.GetFlowerTiles();
+    }
+    public TilesContainer GetDiscardedTiles()
+    {
+        return this.discardedTilesContainer;
+    }
+    private void SetPlayerWinds(Player player, Winds wind)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -37,9 +58,35 @@ public class TurnProcessor
             wind = wind.Next<Winds>();
         }
     }
-    public void Process(Tile discardedTile)
+    private void DiscardTile(int tileIndex, int discardingPlayerId)
     {
         GameStateController.instance.gameState = GameStates.PROCESSING;
+        players[discardingPlayerId].DiscardTile(tileIndex, discardedTilesContainer);
+        GameStateController.instance.RefreshDisplays();
+        Tile discardedTile = discardedTilesContainer.GetLastTile();
+        Offer(discardedTile, discardingPlayerId);
+    }
+    private void DrawTile(Player drawingPlayer)
+    {
+        drawingPlayer.DrawTile(tileQueue);
+        GameStateController.instance.RefreshDisplays();
+        GameStateController.instance.gameState = (GameStates)drawingPlayer.GetId();
+    }
+    private void Offer(Tile discardedTile, int offeringPlayerId)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            // Offer tile to all other players to Pong, Kong, Chow or Hu
+        }
+        if (requestProcessor.isEmpty())
+        {
+            Player nextPlayer = GetNextPlayer(offeringPlayerId);
+            DrawTile(nextPlayer);
+        }
+        else
+        {
+
+        }
     }
     private Player GetNextPlayer(Player currentPlayer)
     {
