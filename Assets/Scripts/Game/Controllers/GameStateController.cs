@@ -30,7 +30,23 @@ public class GameStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        switch (gameState)
+        {
+            case GameStates.PLAYER0_DRAWING:
+                turnProcessor.DrawPlayerTile();
+                break;
+            case GameStates.OPPONENT1_DRAWING:
+                turnProcessor.AutoPlay();
+                break;
+            case GameStates.OPPONENT2_DRAWING:
+                turnProcessor.AutoPlay();
+                break;
+            case GameStates.OPPONENT3_DRAWING:
+                turnProcessor.AutoPlay();
+                break;
+            default:
+                break;
+        }
     }
     public void DiscardPlayerTile(int index)
     {
@@ -41,10 +57,6 @@ public class GameStateController : MonoBehaviour
         DisplayPlayerMainTiles();
         DisplayPlayerFlowerTiles();
         DisplayDiscardedTiles();
-    }
-    private void Setup()
-    {
-
     }
     private void DisplayPlayerMainTiles()
     {

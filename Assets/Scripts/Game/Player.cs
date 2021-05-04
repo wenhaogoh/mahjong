@@ -5,6 +5,7 @@ public class Player
     private TilesContainer mainTiles;
     private TilesContainer tripletTiles;
     private TilesContainer flowerTiles;
+    private const int STARTING_TILES_COUNT = 13;
     public Player(int id)
     {
         this.id = id;
@@ -31,12 +32,7 @@ public class Player
     }
     public void DrawStartingTiles(TileQueue tileQueue)
     {
-        int count = 13;
-        if (wind == Winds.East)
-        {
-            count += 1;
-        }
-        DrawTiles(count, tileQueue);
+        DrawTiles(STARTING_TILES_COUNT, tileQueue);
     }
     public void SortTiles()
     {
