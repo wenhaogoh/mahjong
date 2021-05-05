@@ -68,6 +68,6 @@ public class GameStateController : MonoBehaviour
     }
     private void DisplayDiscardedTiles()
     {
-        discardedTilesContainerController.DisplayLargeTiles(turnProcessor.GetDiscardedTiles());
+        discardedTilesContainerController.DisplaySmallTiles(turnProcessor.GetDiscardedTiles());
     }
 }
