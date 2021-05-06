@@ -1,27 +1,31 @@
+using System.Collections.Generic;
+
 public class Player
 {
     private int id;
     private Winds wind;
     private TilesContainer mainTiles;
-    private TilesContainer tripletTiles;
     private TilesContainer flowerTiles;
     private const int STARTING_TILES_COUNT = 13;
     public Player(int id)
     {
         this.id = id;
         this.mainTiles = new TilesContainer();
-        this.tripletTiles = new TilesContainer();
         this.flowerTiles = new TilesContainer();
+    }
+    public void SetWind(Winds wind)
+    {
+        this.wind = wind;
     }
     public void DrawTile(TileQueue tileQueue)
     {
         Tile tile = tileQueue.DrawFromFront();
         while (tile.IsFlower())
         {
-            flowerTiles.Add(tile);
+            flowerTiles.AddTile(tile);
             tile = tileQueue.DrawFromBack();
         }
-        mainTiles.Add(tile);
+        mainTiles.AddTile(tile);
     }
     private void DrawTiles(int count, TileQueue tileQueue)
     {
@@ -33,11 +37,31 @@ public class Player
     public void DrawStartingTiles(TileQueue tileQueue)
     {
         DrawTiles(STARTING_TILES_COUNT, tileQueue);
+        SortTiles();
     }
-    public void SortTiles()
+    public void DiscardTile(int tileIndex, TilesContainer discardedTilesContainer)
     {
-        mainTiles.Sort();
-        flowerTiles.Sort();
+        Tile toDiscard = mainTiles.RemoveTile(tileIndex);
+        discardedTilesContainer.AddTile(toDiscard);
+    }
+    public List<TileAction> GetPossibleTileActionsFromDrawnTile()
+    {
+        Tile drawnTile = mainTiles.RemoveLastTile();
+        List<TileAction> tileActions = mainTiles.GetPossibleActionsFromDrawnTile(drawnTile);
+        mainTiles.AddTile(drawnTile);
+        return tileActions;
+    }
+    public void ExecuteTileAction(TileAction tileAction)
+    {
+        switch (tileAction.GetTileActionType())
+        {
+            case TileActionTypes.KONG:
+                flowerTiles.AddTiles(tileAction.GetTiles());
+                mainTiles.RemoveTiles(tileAction.GetTiles());
+                break;
+            default:
+                break;
+        }
     }
     public TilesContainer GetMainTiles()
     {
@@ -47,15 +71,6 @@ public class Player
     {
         return flowerTiles;
     }
-    public void DiscardTile(int tileIndex, TilesContainer discardedTilesContainer)
-    {
-        Tile toDiscard = mainTiles.RemoveTile(tileIndex);
-        discardedTilesContainer.Add(toDiscard);
-    }
-    public void SetWind(Winds wind)
-    {
-        this.wind = wind;
-    }
     public Winds GetWind()
     {
         return this.wind;
@@ -63,5 +78,10 @@ public class Player
     public int GetId()
     {
         return this.id;
+    }
+    public void SortTiles()
+    {
+        mainTiles.Sort();
+        flowerTiles.Sort();
     }
 }

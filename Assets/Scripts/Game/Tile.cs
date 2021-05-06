@@ -52,4 +52,20 @@ public class Tile : ScriptableObject, IComparable<Tile>
     {
         return tileType.ToString() + " " + value.ToString();
     }
+    public override bool Equals(object other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        if (!(other as Tile))
+        {
+            return false;
+        }
+        return (this.tileType == ((Tile)other).tileType) && (this.value == ((Tile)other).value);
+    }
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

@@ -35,11 +35,14 @@ public class TurnProcessor
     public void DrawPlayerTile()
     {
         DrawTile(player0);
-        GameStateController.instance.gameState = GameStates.PLAYER0_DISCARDING;
     }
     public void DiscardPlayerTile(int index)
     {
-        DiscardTile(index, player0.GetId());
+        DiscardTile(index, player0);
+    }
+    public void ExecutePlayerTileAction(TileAction tileAction)
+    {
+        ExecuteTileAction(tileAction, player0);
     }
     public TilesContainer GetPlayerMainTiles()
     {
@@ -72,20 +75,38 @@ public class TurnProcessor
             wind = wind.Next<Winds>();
         }
     }
-    private void DiscardTile(int tileIndex, int discardingPlayerId)
-    {
-        GameStateController.instance.gameState = GameStates.PROCESSING;
-        players[discardingPlayerId].DiscardTile(tileIndex, discardedTilesContainer);
-        GameStateController.instance.RefreshDisplays();
-        Tile discardedTile = discardedTilesContainer.GetLastTile();
-        Offer(discardedTile, discardingPlayerId);
-    }
     private void DrawTile(Player drawingPlayer)
     {
         drawingPlayer.DrawTile(tileQueue);
+        if (drawingPlayer.GetId() == 0)
+        {
+            GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
+        }
         GameStateController.instance.RefreshDisplays();
+        GameStateController.instance.gameState = MapPlayerToDiscardingGameState(drawingPlayer);
     }
-    private void Offer(Tile discardedTile, int offeringPlayerId)
+    private void DiscardTile(int tileIndex, Player discardingPlayer)
+    {
+        GameStateController.instance.gameState = GameStates.PROCESSING;
+        discardingPlayer.DiscardTile(tileIndex, discardedTilesContainer);
+        discardingPlayer.SortTiles();
+        GameStateController.instance.RefreshDisplays();
+        Tile discardedTile = discardedTilesContainer.GetLastTile();
+        Offer(discardedTile, discardingPlayer);
+    }
+    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer)
+    {
+        executingPlayer.ExecuteTileAction(tileAction);
+        switch (tileAction.GetTileActionType())
+        {
+            case TileActionTypes.KONG:
+                DrawTile(executingPlayer);
+                break;
+            default:
+                break;
+        }
+    }
+    private void Offer(Tile discardedTile, Player offeringPlayer)
     {
         for (int i = 0; i < players.Length; i++)
         {
@@ -93,7 +114,7 @@ public class TurnProcessor
         }
         if (requestProcessor.isEmpty())
         {
-            Player nextPlayer = GetNextPlayer(offeringPlayerId);
+            Player nextPlayer = GetNextPlayer(offeringPlayer);
             GameStateController.instance.gameState = MapPlayerToDrawingGameState(nextPlayer);
         }
         else
@@ -119,7 +140,7 @@ public class TurnProcessor
     {
         DrawTile(player);
         yield return new WaitForSecondsRealtime(delayInSeconds);
-        DiscardTile(0, player.GetId());
+        DiscardTile(0, player);
     }
     private Player MapGameStateToPlayer(GameStates gameState)
     {
@@ -157,6 +178,22 @@ public class TurnProcessor
                 return GameStates.OPPONENT2_DRAWING;
             case 3:
                 return GameStates.OPPONENT3_DRAWING;
+            default:
+                throw new Exception("No such player!");
+        }
+    }
+    private GameStates MapPlayerToDiscardingGameState(Player player)
+    {
+        switch (player.GetId())
+        {
+            case 0:
+                return GameStates.PLAYER0_DISCARDING;
+            case 1:
+                return GameStates.OPPONENT1_DISCARDING;
+            case 2:
+                return GameStates.OPPONENT2_DISCARDING;
+            case 3:
+                return GameStates.OPPONENT3_DISCARDING;
             default:
                 throw new Exception("No such player!");
         }
