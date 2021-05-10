@@ -47,6 +47,10 @@ public class TilesContainer
         tiles.RemoveAt(tiles.Count - 1);
         return lastTile;
     }
+    public int Count()
+    {
+        return tiles.Count();
+    }
     public List<TileAction> GetPossibleActionsFromDrawnTile(Tile drawnTile)
     {
         List<TileAction> actions = new List<TileAction>();
@@ -56,10 +60,6 @@ public class TilesContainer
             actions.Add(kongAction);
         }
         return actions;
-    }
-    public int Count()
-    {
-        return tiles.Count();
     }
     private TileAction GetPongAction(Tile drawnTile)
     {

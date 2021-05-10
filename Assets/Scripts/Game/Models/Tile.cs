@@ -6,18 +6,9 @@ public class Tile : ScriptableObject, IComparable<Tile>
 {
     private TileTypes tileType;
     private int value;
-    public Tile(TileTypes type, int value)
+    public bool IsFlower()
     {
-        this.tileType = type;
-        this.value = value;
-    }
-    public void SetType(TileTypes type)
-    {
-        this.tileType = type;
-    }
-    public void SetValue(int value)
-    {
-        this.value = value;
+        return this.tileType == TileTypes.Flower;
     }
     public TileTypes GetTileType()
     {
@@ -27,9 +18,13 @@ public class Tile : ScriptableObject, IComparable<Tile>
     {
         return this.value;
     }
-    public bool IsFlower()
+    public void SetTileType(TileTypes type)
     {
-        return this.tileType == TileTypes.Flower;
+        this.tileType = type;
+    }
+    public void SetValue(int value)
+    {
+        this.value = value;
     }
     public int CompareTo(Tile obj)
     {
@@ -47,10 +42,6 @@ public class Tile : ScriptableObject, IComparable<Tile>
         {
             return this.value.CompareTo(obj.value);
         }
-    }
-    public override string ToString()
-    {
-        return tileType.ToString() + " " + value.ToString();
     }
     public override bool Equals(object other)
     {
