@@ -18,6 +18,7 @@ public class TurnProcessor
     public void NewGame()
     {
         tileQueue = new TileQueue();
+        tileQueue.Randomize();
         discardedTilesContainer = new TilesContainer();
         requestProcessor = new RequestProcessor();
         this.player0 = new Player(0);

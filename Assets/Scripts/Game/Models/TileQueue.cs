@@ -85,8 +85,14 @@ public class TileQueue
             }
         }
 
-        RandomNumberGenerator.Shuffle<Tile>(tiles);
-
         return tiles;
+    }
+    public void Randomize()
+    {
+        RandomNumberGenerator.Shuffle<Tile>(deque);
+    }
+    public int Count()
+    {
+        return deque.Count;
     }
 }

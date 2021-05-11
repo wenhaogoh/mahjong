@@ -13,10 +13,6 @@ public class Player
         this.mainTiles = new TilesContainer();
         this.flowerTiles = new TilesContainer();
     }
-    public void SetWind(Winds wind)
-    {
-        this.wind = wind;
-    }
     public void DrawTile(TileQueue tileQueue)
     {
         Tile tile = tileQueue.DrawFromFront();
@@ -26,13 +22,6 @@ public class Player
             tile = tileQueue.DrawFromBack();
         }
         mainTiles.AddTile(tile);
-    }
-    private void DrawTiles(int count, TileQueue tileQueue)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            DrawTile(tileQueue);
-        }
     }
     public void DrawStartingTiles(TileQueue tileQueue)
     {
@@ -63,6 +52,15 @@ public class Player
                 break;
         }
     }
+    public void SortTiles()
+    {
+        mainTiles.Sort();
+        flowerTiles.Sort();
+    }
+    public void SetWind(Winds wind)
+    {
+        this.wind = wind;
+    }
     public TilesContainer GetMainTiles()
     {
         return mainTiles;
@@ -79,9 +77,11 @@ public class Player
     {
         return this.id;
     }
-    public void SortTiles()
+    private void DrawTiles(int count, TileQueue tileQueue)
     {
-        mainTiles.Sort();
-        flowerTiles.Sort();
+        for (int i = 0; i < count; i++)
+        {
+            DrawTile(tileQueue);
+        }
     }
 }
