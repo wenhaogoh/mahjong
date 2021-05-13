@@ -30,7 +30,7 @@ public class TurnProcessor
         opponent1.DrawStartingTiles(tileQueue);
         opponent2.DrawStartingTiles(tileQueue);
         opponent3.DrawStartingTiles(tileQueue);
-        SetPlayerWinds(player0, Winds.East);
+        SetPlayerWinds(player0, Winds.EAST);
         GameStateController.instance.RefreshDisplays();
     }
     public void DrawPlayerTile()
@@ -67,7 +67,7 @@ public class TurnProcessor
     {
         for (int i = 0; i < 4; i++)
         {
-            if (wind == Winds.East)
+            if (wind == Winds.EAST)
             {
                 GameStateController.instance.gameState = (GameStates)player.GetId();
             }

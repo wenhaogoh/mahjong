@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class TileTests
 {
-    private const TileTypes BAMBOO_TILE_TYPE = TileTypes.Bamboo;
-    private const TileTypes FLOWER_TILE_TYPE = TileTypes.Flower;
+    private const TileTypes BAMBOO_TILE_TYPE = TileTypes.BAMBOO;
+    private const TileTypes FLOWER_TILE_TYPE = TileTypes.FLOWER;
     private const int INTEGER_TEN = 10;
     private const int INTEGER_TWENTY = 20;
     [Test]

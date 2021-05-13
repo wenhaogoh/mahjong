@@ -55,8 +55,8 @@ public class TilesContainerTests
         TilesContainer tilesContainer = new TilesContainer();
         Tile largerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
         Tile smallerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        largerTile.SetTileType(TileTypes.Flower);
-        smallerTile.SetTileType(TileTypes.Bamboo);
+        largerTile.SetTileType(TileTypes.FLOWER);
+        smallerTile.SetTileType(TileTypes.BAMBOO);
         tilesContainer.AddTile(largerTile);
         tilesContainer.AddTile(smallerTile);
         tilesContainer.Sort();
@@ -99,7 +99,7 @@ public class TilesContainerTests
     {
         TilesContainer tilesContainer = new TilesContainer();
         Tile drawnTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        drawnTile.SetTileType(TileTypes.Bamboo);
+        drawnTile.SetTileType(TileTypes.BAMBOO);
         drawnTile.SetValue(1);
         Assert.AreEqual(0, tilesContainer.GetPossibleActionsFromDrawnTile(drawnTile).Count);
     }
@@ -108,12 +108,12 @@ public class TilesContainerTests
     {
         TilesContainer tilesContainer = new TilesContainer();
         Tile drawnTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        drawnTile.SetTileType(TileTypes.Bamboo);
+        drawnTile.SetTileType(TileTypes.BAMBOO);
         drawnTile.SetValue(1);
         for (int i = 0; i < 3; i++)
         {
             Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            tile.SetTileType(TileTypes.Bamboo);
+            tile.SetTileType(TileTypes.BAMBOO);
             tile.SetValue(1);
             tilesContainer.AddTile(tile);
         }

@@ -1,8 +1,8 @@
 public enum TileTypes
 {
-    Bamboo,
-    Character,
-    Dot,
-    Flower,
-    Honour
+    BAMBOO,
+    CHARACTER,
+    DOT,
+    FLOWER,
+    HONOUR
 }

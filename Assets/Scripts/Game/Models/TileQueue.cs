@@ -25,58 +25,61 @@ public class TileQueue
         {
             switch (tileType)
             {
-                case TileTypes.Bamboo:
+                case TileTypes.BAMBOO:
                     for (int i = 1; i <= 9; i++)
                     {
                         for (int j = 0; j < 4; j++)
                         {
                             Tile bambooTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            bambooTile.SetTileType(TileTypes.Bamboo);
+                            bambooTile.SetTileType(tileType);
                             bambooTile.SetValue(i);
                             tiles.Add(bambooTile);
                         }
                     }
                     break;
-                case TileTypes.Character:
+                case TileTypes.CHARACTER:
                     for (int i = 1; i <= 9; i++)
                     {
                         for (int j = 0; j < 4; j++)
                         {
                             Tile characterTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            characterTile.SetTileType(TileTypes.Character);
+                            characterTile.SetTileType(tileType);
                             characterTile.SetValue(i);
                             tiles.Add(characterTile);
                         }
                     }
                     break;
-                case TileTypes.Dot:
+                case TileTypes.DOT:
                     for (int i = 1; i <= 9; i++)
                     {
                         for (int j = 0; j < 4; j++)
                         {
                             Tile dotTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            dotTile.SetTileType(TileTypes.Dot);
+                            dotTile.SetTileType(tileType);
                             dotTile.SetValue(i);
                             tiles.Add(dotTile);
                         }
                     }
                     break;
-                case TileTypes.Flower:
+                case TileTypes.FLOWER:
                     for (int i = 1; i <= 12; i++) // Cat + Mouse + Rooster + Centipede + 2 * 4 Flowers
                     {
                         Tile flowerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                        flowerTile.SetTileType(TileTypes.Flower);
+                        flowerTile.SetTileType(tileType);
                         flowerTile.SetValue(i);
                         tiles.Add(flowerTile);
                     }
                     break;
-                case TileTypes.Honour:
-                    for (int i = 1; i <= 28; i++) // 4 * White Dragon + 4 * Red Dragon + 4 * Green Dragon + 4 * 4 Winds
+                case TileTypes.HONOUR:
+                    foreach (HonourTypes honourType in HonourTypes.GetValues(typeof(HonourTypes))) // 4 * White Dragon + 4 * Red Dragon + 4 * Green Dragon + 4 * 4 Winds
                     {
-                        Tile honourTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                        honourTile.SetTileType(TileTypes.Honour);
-                        honourTile.SetValue(i);
-                        tiles.Add(honourTile);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            Tile honourTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+                            honourTile.SetTileType(tileType);
+                            honourTile.SetValue((int)honourType);
+                            tiles.Add(honourTile);
+                        }
                     }
                     break;
                 default:

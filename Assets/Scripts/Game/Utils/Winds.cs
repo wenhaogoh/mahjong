@@ -1,7 +1,7 @@
 public enum Winds
 {
-    East,
-    South,
-    West,
-    North
+    EAST,
+    SOUTH,
+    WEST,
+    NORTH
 }

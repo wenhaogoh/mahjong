@@ -8,7 +8,7 @@ public class Tile : ScriptableObject, IComparable<Tile>
     private int value;
     public bool IsFlower()
     {
-        return this.tileType == TileTypes.Flower;
+        return this.tileType == TileTypes.FLOWER;
     }
     public TileTypes GetTileType()
     {

@@ -14,7 +14,7 @@ public class TileQueueTests
     {
         TileQueue tileQueue = new TileQueue();
         Tile firstTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        firstTile.SetTileType(TileTypes.Bamboo);
+        firstTile.SetTileType(TileTypes.BAMBOO);
         firstTile.SetValue(1);
         Assert.AreEqual(firstTile, tileQueue.DrawFromFront());
         Assert.AreEqual(147, tileQueue.Count());
@@ -24,8 +24,8 @@ public class TileQueueTests
     {
         TileQueue tileQueue = new TileQueue();
         Tile lastTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        lastTile.SetTileType(TileTypes.Honour);
-        lastTile.SetValue(28);
+        lastTile.SetTileType(TileTypes.HONOUR);
+        lastTile.SetValue((int)HonourTypes.NORTH);
         Assert.AreEqual(lastTile, tileQueue.DrawFromBack());
         Assert.AreEqual(147, tileQueue.Count());
     }

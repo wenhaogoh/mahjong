@@ -68,7 +68,7 @@ public class PlayerTests
     public void SetWind()
     {
         Player player = new Player(INTEGER_ZERO);
-        player.SetWind(Winds.East);
-        Assert.AreEqual(Winds.East, player.GetWind());
+        player.SetWind(Winds.EAST);
+        Assert.AreEqual(Winds.EAST, player.GetWind());
     }
 }
