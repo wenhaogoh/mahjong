@@ -12,7 +12,6 @@ public class TurnProcessor
     private Player opponent2; // Top
     private Player opponent3; // Left
     private Player[] players;
-    private int currentTurnIndex;
     private const int AUTO_PLAY_DELAY = 2;
 
     public void NewGame()

@@ -6,6 +6,7 @@ public class GameStateController : MonoBehaviour
     public TilesContainerController playerMainTilesContainerController;
     public TilesContainerController playerFlowerTilesContainerController;
     public TilesContainerController discardedTilesContainerController;
+    public TileActionsContainerController huActionContainerController;
     public TileActionsContainerController tileActionsContainerController;
     public static GameStateController instance = null;
     public GameStates gameState;
@@ -70,11 +71,21 @@ public class GameStateController : MonoBehaviour
     {
         foreach (TileAction tileAction in tileActions)
         {
-            tileActionsContainerController.DisplayTileAction(tileAction);
+            switch (tileAction.GetTileActionType())
+            {
+                case TileActionTypes.HU:
+                    huActionContainerController.DisplayTileAction(tileAction);
+                    break;
+                default:
+                    tileActionsContainerController.DisplayTileAction(tileAction);
+                    break;
+            }
+
         }
     }
     private void ClearTileActionsDisplay()
     {
+        huActionContainerController.ClearTileActionsDisplay();
         tileActionsContainerController.ClearTileActionsDisplay();
     }
     private void DisplayPlayerMainTiles()
