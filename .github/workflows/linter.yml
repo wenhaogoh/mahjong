@@ -28,5 +28,6 @@ jobs:
       - name: Super-Linter
         uses: github/super-linter@v3.17.1
         env:
-          FILTER_REGEX_INCLUDE: Assets/.*Scripts/.*
+          FILTER_REGEX_INCLUDE: Assets/Scripts/.*
+          FILTER_REGEX_EXCLUDE: Assets/Scripts/Game/Utils/.*
           
