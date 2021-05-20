@@ -25,9 +25,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Super-Linter
+      - name: Lint Scripts
         uses: github/super-linter@v3.17.1
         env:
-          FILTER_REGEX_INCLUDE: Assets/Scripts/.*
-          FILTER_REGEX_EXCLUDE: Assets/Scripts/Game/Utils/.*
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_INCLUDE: .*Assets/Scripts/.*
+          FILTER_REGEX_EXCLUDE: .*Assets/Scripts/Game/Utils/.*
           
