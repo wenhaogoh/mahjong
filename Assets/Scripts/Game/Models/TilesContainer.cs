@@ -31,7 +31,10 @@ public class TilesContainer
     {
         foreach (Tile tile in tiles.GetTiles())
         {
-            this.tiles.Remove(tile);
+            if (this.tiles.Contains(tile))
+            {
+                this.tiles.Remove(tile);
+            }
         }
     }
     public void Sort()

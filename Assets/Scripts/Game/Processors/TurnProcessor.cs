@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TurnProcessor
 {
@@ -129,6 +130,7 @@ public class TurnProcessor
             }
             else
             {
+                discardedTilesContainer.RemoveLastTile();
                 ExecuteRequest(request);
             }
         }
@@ -146,7 +148,11 @@ public class TurnProcessor
             }
             if (player.GetId() == 0)
             {
-                GameStateController.instance.DisplayTileActions(player.GetPossibleTileActionsFromOfferedTile(discardedTile, offeringPlayer));
+                List<TileAction> tileActions = player.GetPossibleTileActionsFromOfferedTile(discardedTile, offeringPlayer);
+                if (tileActions.Count == 0)
+                {
+                    ProcessTileActionRequest(null, player);
+                }
                 continue;
             }
             else

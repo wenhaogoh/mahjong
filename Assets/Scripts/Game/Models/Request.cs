@@ -29,6 +29,8 @@ public class Request : IComparable<Request>
 
         if (obj.tileAction == null) return 1;
 
+        if (this.tileAction == null) return -1;
+
         if (obj.tileAction.GetTileActionType() < this.tileAction.GetTileActionType())
         {
             return 1;
