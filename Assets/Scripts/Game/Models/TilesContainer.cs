@@ -52,7 +52,7 @@ public class TilesContainer
     {
         return tiles.Count();
     }
-    public List<TileAction> GetPossibleActionsFromDrawnTile(Tile drawnTile)
+    public List<TileAction> GetPossibleTileActionsFromDrawnTile(Tile drawnTile)
     {
         List<TileAction> actions = new List<TileAction>();
         TileAction huAction = GetHuAction(drawnTile);
@@ -65,6 +65,26 @@ public class TilesContainer
         {
             actions.Add(kongAction);
         }
+        return actions;
+    }
+    public List<TileAction> GetPossibleTileActionsFromOfferedTile(Tile offeredTile, bool isFromPreviousPlayer)
+    {
+        List<TileAction> actions = new List<TileAction>();
+        if (isFromPreviousPlayer)
+        {
+            // Add GetChowAction here
+        }
+        TileAction huAction = GetHuAction(offeredTile);
+        if (huAction != null)
+        {
+            actions.Add(huAction);
+        }
+        TileAction kongAction = GetKongAction(offeredTile);
+        if (kongAction != null)
+        {
+            actions.Add(kongAction);
+        }
+        // Add GetPongAction here
         return actions;
     }
     private TileAction GetPongAction(Tile drawnTile)

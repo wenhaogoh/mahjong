@@ -16,6 +16,16 @@ public class TileActionController : MonoBehaviour
     }
     public void OnClick()
     {
-        GameStateController.instance.ExecutePlayerAction(tileAction);
+        bool isOpponentOffering = GameStateController.instance.gameState == GameStates.OPPONENT1_OFFERING
+                               || GameStateController.instance.gameState == GameStates.OPPONENT2_OFFERING
+                               || GameStateController.instance.gameState == GameStates.OPPONENT3_OFFERING;
+        if (isOpponentOffering)
+        {
+            GameStateController.instance.ProcessPlayerTileActionRequest(tileAction);
+        }
+        else
+        {
+            GameStateController.instance.ExecutePlayerTileAction(tileAction);
+        }
     }
 }

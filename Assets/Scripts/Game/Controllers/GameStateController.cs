@@ -56,10 +56,15 @@ public class GameStateController : MonoBehaviour
         ClearTileActionsDisplay();
         turnProcessor.DiscardPlayerTile(index);
     }
-    public void ExecutePlayerAction(TileAction tileAction)
+    public void ExecutePlayerTileAction(TileAction tileAction)
     {
         ClearTileActionsDisplay();
         turnProcessor.ExecutePlayerTileAction(tileAction);
+    }
+    public void ProcessPlayerTileActionRequest(TileAction tileAction)
+    {
+        ClearTileActionsDisplay();
+        turnProcessor.ProcessPlayerTileActionRequest(tileAction);
     }
     public void RefreshDisplays()
     {
