@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Linter
+name: CI
 
 # Controls when the action will run. 
 on:
@@ -31,4 +31,5 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_EXCLUDE: .*Assets/Scripts/Game/Utils/.*
+          VALIDATE_JSCPD: false
           
