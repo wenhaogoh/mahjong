@@ -30,6 +30,5 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILTER_REGEX_INCLUDE: .*Assets/Scripts/.*
           FILTER_REGEX_EXCLUDE: .*Assets/Scripts/Game/Utils/.*
           
