@@ -1,7 +1,7 @@
 public enum TileActionTypes
 {
+    CHOW,
     PONG,
     KONG,
-    CHOW,
     HU
 }

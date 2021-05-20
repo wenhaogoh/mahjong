@@ -36,7 +36,7 @@ public class Player
     public List<TileAction> GetPossibleTileActionsFromDrawnTile()
     {
         Tile drawnTile = mainTiles.RemoveLastTile();
-        List<TileAction> tileActions = mainTiles.GetPossibleActionsFromDrawnTile(drawnTile);
+        List<TileAction> tileActions = mainTiles.GetPossibleTileActionsFromDrawnTile(drawnTile);
         mainTiles.AddTile(drawnTile);
         return tileActions;
     }
@@ -51,6 +51,10 @@ public class Player
             default:
                 break;
         }
+    }
+    public List<TileAction> GetPossibleTileActionsFromOfferedTile(Tile offeredTile, Player offeringPlayer)
+    {
+        return mainTiles.GetPossibleTileActionsFromOfferedTile(offeredTile, IsPreviousPlayer(offeringPlayer));
     }
     public void SortTiles()
     {
@@ -82,6 +86,17 @@ public class Player
         for (int i = 0; i < count; i++)
         {
             DrawTile(tileQueue);
+        }
+    }
+    private bool IsPreviousPlayer(Player player)
+    {
+        if (GetId() == 0)
+        {
+            return player.GetId() == 4;
+        }
+        else
+        {
+            return player.GetId() - GetId() == -1;
         }
     }
 }

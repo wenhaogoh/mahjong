@@ -101,7 +101,7 @@ public class TilesContainerTests
         Tile drawnTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
         drawnTile.SetTileType(TileTypes.BAMBOO);
         drawnTile.SetValue(1);
-        Assert.AreEqual(0, tilesContainer.GetPossibleActionsFromDrawnTile(drawnTile).Count);
+        Assert.AreEqual(0, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile).Count);
     }
     [Test]
     public void GetPossibleActionsFromDrawnTile_Kong()
@@ -117,7 +117,7 @@ public class TilesContainerTests
             tile.SetValue(1);
             tilesContainer.AddTile(tile);
         }
-        Assert.AreEqual(1, tilesContainer.GetPossibleActionsFromDrawnTile(drawnTile).Count);
-        Assert.AreEqual(TileActionTypes.KONG, tilesContainer.GetPossibleActionsFromDrawnTile(drawnTile)[0].GetTileActionType());
+        Assert.AreEqual(1, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile).Count);
+        Assert.AreEqual(TileActionTypes.KONG, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile)[0].GetTileActionType());
     }
 }
