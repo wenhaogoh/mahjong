@@ -2,11 +2,12 @@ using System.Collections.Generic;
 
 public class Player
 {
+    private const int STARTING_TILES_COUNT = 13;
+    private const int MAX_PLAYER_ID = 3;
     private int id;
     private Winds wind;
     private TilesContainer mainTiles;
     private TilesContainer flowerTiles;
-    private const int STARTING_TILES_COUNT = 13;
     public Player(int id)
     {
         this.id = id;
@@ -90,13 +91,13 @@ public class Player
     }
     private bool IsPreviousPlayer(Player player)
     {
-        if (GetId() == 0)
+        if (this.id == 0)
         {
-            return player.GetId() == 4;
+            return player.id == MAX_PLAYER_ID;
         }
         else
         {
-            return player.GetId() - GetId() == -1;
+            return player.id - this.id == -1;
         }
     }
 }
