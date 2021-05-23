@@ -59,8 +59,9 @@ public class PlayerTests
         }
         TilesContainer tilesContainer = new TilesContainer();
         tilesContainer.AddTiles(player.GetMainTiles());
-        TileAction tileAction = new TileAction(TileActionTypes.KONG, tilesContainer);
-        player.ExecuteTileAction(tileAction, null);
+        Tile triggerTile = tilesContainer.GetLastTile();
+        TileAction tileAction = new TileAction(TileActionTypes.KONG, tilesContainer, triggerTile);
+        player.ExecuteTileAction(tileAction);
         Assert.AreEqual(4, player.GetFlowerTiles().Count());
         Assert.AreEqual(0, player.GetMainTiles().Count());
     }
@@ -76,9 +77,9 @@ public class PlayerTests
         }
         TilesContainer tilesContainer = new TilesContainer();
         tilesContainer.AddTiles(player.GetMainTiles());
-        Tile offeredTile = tilesContainer.GetLastTile();
-        TileAction tileAction = new TileAction(TileActionTypes.CHOW, tilesContainer);
-        player.ExecuteTileAction(tileAction, offeredTile);
+        Tile triggerTile = tilesContainer.GetLastTile();
+        TileAction tileAction = new TileAction(TileActionTypes.CHOW, tilesContainer, triggerTile);
+        player.ExecuteTileAction(tileAction, triggerTile);
         Assert.AreEqual(3, player.GetFlowerTiles().Count());
         Assert.AreEqual(1, player.GetMainTiles().Count());
     }

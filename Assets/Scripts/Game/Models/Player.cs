@@ -41,18 +41,20 @@ public class Player
         mainTiles.AddTile(drawnTile);
         return tileActions;
     }
-    public void ExecuteTileAction(TileAction tileAction, Tile offeredTile)
+    public void ExecuteTileAction(TileAction tileAction, bool isFromOffer = false)
     {
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.CHOW:
             case TileActionTypes.KONG:
                 flowerTiles.AddTiles(tileAction.GetTiles());
-                if (offeredTile != null) 
+                if (isFromOffer) 
                 {
-                    tileAction.GetTiles().RemoveTile(offeredTile);
+                    mainTiles.RemoveTiles(tileAction.GetTilesWithoutTriggerTile());
+                } else 
+                {
+                    mainTiles.RemoveTiles(tileAction.GetTiles());
                 }
-                mainTiles.RemoveTiles(tileAction.GetTiles());
                 break;
             default:
                 break;

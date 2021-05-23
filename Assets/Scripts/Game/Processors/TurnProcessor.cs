@@ -99,13 +99,13 @@ public class TurnProcessor
         Tile discardedTile = discardedTilesContainer.GetLastTile();
         Offer(discardedTile, discardingPlayer);
     }
-    private void ExecuteRequest(Request request, Tile offeredTile)
+    private void ExecuteRequest(Request request)
     {
-        ExecuteTileAction(request.GetTileAction(), request.GetRequestingPlayer(), offeredTile);
+        ExecuteTileAction(request.GetTileAction(), request.GetRequestingPlayer(), true);
     }
-    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, Tile offeredTile = null)
+    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, bool isFromOffer = false)
     {
-        executingPlayer.ExecuteTileAction(tileAction, offeredTile);
+        executingPlayer.ExecuteTileAction(tileAction, isFromOffer);
         GameStateController.instance.RefreshDisplays();
 
         switch (tileAction.GetTileActionType())
@@ -136,7 +136,7 @@ public class TurnProcessor
             else
             {
                 Tile offeredTile = discardedTilesContainer.RemoveLastTile();
-                ExecuteRequest(request, offeredTile);
+                ExecuteRequest(request);
             }
         }
     }
