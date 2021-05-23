@@ -20,14 +20,14 @@ public class TileAction
     }
     public TilesContainer GetTilesWithoutTriggerTile()
     {
-        TilesContainer toBeRemovedTiles = new TilesContainer();
+        TilesContainer filteredTiles = new TilesContainer();
         foreach (Tile tile in tiles.GetTiles())
         {
             if (tile != triggerTile)
             {
-                toBeRemovedTiles.AddTile(tile);
+                filteredTiles.AddTile(tile);
             }
         } 
-        return toBeRemovedTiles;
+        return filteredTiles;
     }
 }

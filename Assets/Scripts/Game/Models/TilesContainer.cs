@@ -27,10 +27,6 @@ public class TilesContainer
         tiles.Remove(toRemove);
         return toRemove;
     }
-    public void RemoveTile(Tile tile)
-    {
-        tiles.Remove(tile);
-    }
     public void RemoveTiles(TilesContainer tiles)
     {
         foreach (Tile tile in tiles.GetTiles())

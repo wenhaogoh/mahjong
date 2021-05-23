@@ -135,7 +135,6 @@ public class TurnProcessor
             }
             else
             {
-                Tile offeredTile = discardedTilesContainer.RemoveLastTile();
                 ExecuteRequest(request);
             }
         }
