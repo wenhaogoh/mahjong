@@ -153,6 +153,10 @@ public class TurnProcessor
                 {
                     ProcessTileActionRequest(null, player);
                 }
+                else
+                {
+                    GameStateController.instance.DisplayTileActions(tileActions);
+                }
                 continue;
             }
             else
