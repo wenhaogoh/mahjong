@@ -60,10 +60,29 @@ public class PlayerTests
         TilesContainer tilesContainer = new TilesContainer();
         tilesContainer.AddTiles(player.GetMainTiles());
         TileAction tileAction = new TileAction(TileActionTypes.KONG, tilesContainer);
-        player.ExecuteTileAction(tileAction);
+        player.ExecuteTileAction(tileAction, null);
         Assert.AreEqual(4, player.GetFlowerTiles().Count());
         Assert.AreEqual(0, player.GetMainTiles().Count());
     }
+
+    [Test]
+    public void ExecuteTileAction_Chow()
+    {
+        Player player = new Player(INTEGER_ZERO);
+        TileQueue tileQueue = new TileQueue();
+        for (int i = 0; i < 3; i++)
+        {
+            player.DrawTile(tileQueue);
+        }
+        TilesContainer tilesContainer = new TilesContainer();
+        tilesContainer.AddTiles(player.GetMainTiles());
+        Tile offeredTile = tilesContainer.GetLastTile();
+        TileAction tileAction = new TileAction(TileActionTypes.CHOW, tilesContainer);
+        player.ExecuteTileAction(tileAction, offeredTile);
+        Assert.AreEqual(3, player.GetFlowerTiles().Count());
+        Assert.AreEqual(1, player.GetMainTiles().Count());
+    }
+
     [Test]
     public void SetWind()
     {

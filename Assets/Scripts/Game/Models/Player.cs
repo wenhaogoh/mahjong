@@ -41,12 +41,17 @@ public class Player
         mainTiles.AddTile(drawnTile);
         return tileActions;
     }
-    public void ExecuteTileAction(TileAction tileAction)
+    public void ExecuteTileAction(TileAction tileAction, Tile offeredTile)
     {
         switch (tileAction.GetTileActionType())
         {
+            case TileActionTypes.CHOW:
             case TileActionTypes.KONG:
                 flowerTiles.AddTiles(tileAction.GetTiles());
+                if (offeredTile != null) 
+                {
+                    tileAction.GetTiles().RemoveTile(offeredTile);
+                }
                 mainTiles.RemoveTiles(tileAction.GetTiles());
                 break;
             default:

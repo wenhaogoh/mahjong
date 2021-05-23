@@ -99,17 +99,22 @@ public class TurnProcessor
         Tile discardedTile = discardedTilesContainer.GetLastTile();
         Offer(discardedTile, discardingPlayer);
     }
-    private void ExecuteRequest(Request request)
+    private void ExecuteRequest(Request request, Tile offeredTile)
     {
-        ExecuteTileAction(request.GetTileAction(), request.GetRequestingPlayer());
+        ExecuteTileAction(request.GetTileAction(), request.GetRequestingPlayer(), offeredTile);
     }
-    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer)
+    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, Tile offeredTile = null)
     {
-        executingPlayer.ExecuteTileAction(tileAction);
+        executingPlayer.ExecuteTileAction(tileAction, offeredTile);
+        GameStateController.instance.RefreshDisplays();
+
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.KONG:
                 DrawTile(executingPlayer);
+                break;
+            case TileActionTypes.CHOW:
+                GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(executingPlayer.GetId()); 
                 break;
             default:
                 break;
@@ -130,8 +135,8 @@ public class TurnProcessor
             }
             else
             {
-                discardedTilesContainer.RemoveLastTile();
-                ExecuteRequest(request);
+                Tile offeredTile = discardedTilesContainer.RemoveLastTile();
+                ExecuteRequest(request, offeredTile);
             }
         }
     }

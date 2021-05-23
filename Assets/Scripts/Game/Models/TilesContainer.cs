@@ -27,6 +27,10 @@ public class TilesContainer
         tiles.Remove(toRemove);
         return toRemove;
     }
+    public void RemoveTile(Tile tile)
+    {
+        tiles.Remove(tile);
+    }
     public void RemoveTiles(TilesContainer tiles)
     {
         foreach (Tile tile in tiles.GetTiles())
@@ -75,7 +79,11 @@ public class TilesContainer
         List<TileAction> actions = new List<TileAction>();
         if (isFromPreviousPlayer)
         {
-            // Add GetChowAction here
+            List<TileAction> chowActions = GetChowActions(offeredTile);
+            if (chowActions != null)
+            {
+                actions.AddRange(chowActions);
+            } 
         }
         TileAction huAction = GetHuAction(offeredTile);
         if (huAction != null)
@@ -90,13 +98,70 @@ public class TilesContainer
         // Add GetPongAction here
         return actions;
     }
-    private TileAction GetPongAction(Tile drawnTile)
+
+    private List<TileAction> GetChowActions(Tile newTile)
+    {
+        if (newTile.GetTileType() == TileTypes.HONOUR)
+        {
+            return null;
+        }
+        
+        List<TileAction> chowActions = new List<TileAction>();
+        TileTypes newTileType = newTile.GetTileType();
+        Dictionary<int, Tile> tilesDict = new Dictionary<int, Tile>();
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            tilesDict.Add(i, tiles[i]);
+        }
+
+        // Find CHOW partners of newTile N
+        Tile[] partners = new Tile[5]; // N-2, N-1, N (ignore), N+1, N+2
+        for (int i = 0; i < 5; i++)
+        {
+            partners[i] = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+            partners[i].SetTileType(newTileType);
+            partners[i].SetValue(newTile.GetValue() + i - 2);
+        }
+        
+        // CHOW Sequence: X X N
+        if (tilesDict.ContainsValue(partners[0]) && tilesDict.ContainsValue(partners[1])) 
+        {
+            TilesContainer actionTiles = new TilesContainer();
+            actionTiles.AddTile(partners[0]);
+            actionTiles.AddTile(partners[1]); 
+            actionTiles.AddTile(newTile);
+            chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles));
+        }
+
+        // CHOW Sequence: X N X
+        if (tilesDict.ContainsValue(partners[1]) && tilesDict.ContainsValue(partners[3])) 
+        {
+            TilesContainer actionTiles = new TilesContainer();
+            actionTiles.AddTile(partners[1]);
+            actionTiles.AddTile(newTile); 
+            actionTiles.AddTile(partners[3]);
+            chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles));
+        }
+
+        // CHOW Sequence: N X X
+        if (tilesDict.ContainsValue(partners[3]) && tilesDict.ContainsValue(partners[4])) 
+        {
+            TilesContainer actionTiles = new TilesContainer();
+            actionTiles.AddTile(newTile);
+            actionTiles.AddTile(partners[3]); 
+            actionTiles.AddTile(partners[4]); 
+            chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles));
+        }
+        
+        return chowActions.Any() ? chowActions : null;
+    }
+    private TileAction GetPongAction(Tile newTile)
     {
         TilesContainer actionTiles = new TilesContainer();
-        actionTiles.AddTile(drawnTile);
+        actionTiles.AddTile(newTile);
         foreach (Tile tile in tiles)
         {
-            if (tile.Equals(drawnTile))
+            if (tile.Equals(newTile))
             {
                 actionTiles.AddTile(tile);
                 if (actionTiles.Count() == 3)
