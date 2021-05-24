@@ -89,16 +89,10 @@ public class PlayerTests
     {
         Player player = new Player(INTEGER_ZERO);
         TileQueue tileQueue = new TileQueue();
-        for (int i = 0; i < 27; i++)
+
+        for (int i = 0; i < 3; i++)
         {
-            if (i % 9 == 0)
-            {
-                player.DrawTile(tileQueue);
-            }
-            else
-            {
-                tileQueue.DrawFromFront();
-            }
+            player.GetMainTiles().AddTile(TileUtils.GetRedDragonTile());
         }
         TilesContainer tilesContainer = new TilesContainer();
         tilesContainer.AddTiles(player.GetMainTiles());

@@ -28,10 +28,6 @@ public class TileActionsContainerController : MonoBehaviour
                 tilesContainerController.DisplayLargeTiles(tileAction.GetTiles());
                 tileActionObject.transform.SetParent(this.transform);
                 break;
-            case TileActionTypes.PONG:
-                tilesContainerController.DisplayLargeTiles(tileAction.GetTiles());
-                tileActionObject.transform.SetParent(this.transform);
-                break;
             default:
                 break;
         }

@@ -45,9 +45,9 @@ public class Player
     {
         switch (tileAction.GetTileActionType())
         {
+            case TileActionTypes.PONG:
             case TileActionTypes.CHOW:
             case TileActionTypes.KONG:
-            case TileActionTypes.PONG:
                 flowerTiles.AddTiles(tileAction.GetTiles());
                 if (isFromOffer)
                 {
