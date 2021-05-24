@@ -45,8 +45,13 @@ public class Player
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.KONG:
+            case TileActionTypes.PONG:
+            case TileActionTypes.CHOW:
                 flowerTiles.AddTiles(tileAction.GetTiles());
                 mainTiles.RemoveTiles(tileAction.GetTiles());
+                break;
+            case TileActionTypes.HU:
+                //perform hu action
                 break;
             default:
                 break;

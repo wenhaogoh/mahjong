@@ -111,6 +111,10 @@ public class TurnProcessor
             case TileActionTypes.KONG:
                 DrawTile(executingPlayer);
                 break;
+            case TileActionTypes.PONG:
+                // To be replaced with discarding tile of choice by player
+
+                break;
             default:
                 break;
         }
@@ -122,7 +126,7 @@ public class TurnProcessor
         {
             Request request = requestQueue.GetHighestPriorityRequest();
             requestQueue.Reset();
-            if (request.IsEmpty())
+            if (request.IsEmpty()) // No requests hence turn ends
             {
                 int currentTurnPlayerId = MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState);
                 Player nextTurnPlayer = GetNextPlayer(currentTurnPlayerId);

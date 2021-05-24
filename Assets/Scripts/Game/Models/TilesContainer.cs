@@ -55,6 +55,8 @@ public class TilesContainer
     {
         return tiles.Count();
     }
+
+    // 2 possible actions from drawing tile: hu or kong
     public List<TileAction> GetPossibleTileActionsFromDrawnTile(Tile drawnTile)
     {
         List<TileAction> actions = new List<TileAction>();
@@ -70,6 +72,8 @@ public class TilesContainer
         }
         return actions;
     }
+
+    // 4 possible actions from offered tile: chow, hu, kong, pong
     public List<TileAction> GetPossibleTileActionsFromOfferedTile(Tile offeredTile, bool isFromPreviousPlayer)
     {
         List<TileAction> actions = new List<TileAction>();
@@ -87,16 +91,20 @@ public class TilesContainer
         {
             actions.Add(kongAction);
         }
-        // Add GetPongAction here
+        TileAction pongAction = GetPongAction(offeredTile);
+        if (pongAction != null) 
+        {
+            actions.Add(pongAction);
+        }
         return actions;
     }
-    private TileAction GetPongAction(Tile drawnTile)
+    private TileAction GetPongAction(Tile newTile)
     {
         TilesContainer actionTiles = new TilesContainer();
-        actionTiles.AddTile(drawnTile);
+        actionTiles.AddTile(newTile);
         foreach (Tile tile in tiles)
         {
-            if (tile.Equals(drawnTile))
+            if (tile.Equals(newTile))
             {
                 actionTiles.AddTile(tile);
                 if (actionTiles.Count() == 3)
