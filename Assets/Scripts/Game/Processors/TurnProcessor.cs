@@ -135,6 +135,7 @@ public class TurnProcessor
             }
             else
             {
+                discardedTilesContainer.RemoveLastTile();
                 ExecuteRequest(request);
             }
         }
