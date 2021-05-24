@@ -24,9 +24,6 @@ public class TileActionsContainerController : MonoBehaviour
             case TileActionTypes.HU:
             case TileActionTypes.KONG:
             case TileActionTypes.CHOW:
-                tilesContainerController.DisplayLargeTiles(tileAction.GetTiles());
-                tileActionObject.transform.SetParent(this.transform);
-                break;
             case TileActionTypes.PONG:
                 tilesContainerController.DisplayLargeTiles(tileAction.GetTiles());
                 tileActionObject.transform.SetParent(this.transform);
