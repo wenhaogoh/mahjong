@@ -14,6 +14,7 @@ public class GameStateController : MonoBehaviour
 
     void Awake()
     {
+        // Singleton Pattern
         if (instance == null)
         {
             instance = this;

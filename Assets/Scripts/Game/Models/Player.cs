@@ -47,6 +47,7 @@ public class Player
         {
             case TileActionTypes.CHOW:
             case TileActionTypes.KONG:
+            case TileActionTypes.PONG:
                 flowerTiles.AddTiles(tileAction.GetTiles());
                 if (isFromOffer)
                 {
@@ -56,6 +57,9 @@ public class Player
                 {
                     mainTiles.RemoveTiles(tileAction.GetTiles());
                 }
+                break;
+            case TileActionTypes.HU:
+                //perform hu action
                 break;
             default:
                 break;
