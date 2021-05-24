@@ -85,6 +85,31 @@ public class PlayerTests
     }
 
     [Test]
+    public void ExecuteTileAction_Pong()
+    {
+        Player player = new Player(INTEGER_ZERO);
+        TileQueue tileQueue = new TileQueue();
+        for (int i = 0; i < 27; i++)
+        {
+            if (i % 9 == 0)
+            {
+                player.DrawTile(tileQueue);
+            }
+            else
+            {
+                tileQueue.DrawFromFront();
+            }
+        }
+        TilesContainer tilesContainer = new TilesContainer();
+        tilesContainer.AddTiles(player.GetMainTiles());
+        Tile triggerTile = tilesContainer.GetLastTile();
+        TileAction tileAction = new TileAction(TileActionTypes.PONG, tilesContainer, triggerTile);
+        player.ExecuteTileAction(tileAction, triggerTile);
+        Assert.AreEqual(3, player.GetFlowerTiles().Count());
+        Assert.AreEqual(1, player.GetMainTiles().Count());
+    }
+
+    [Test]
     public void SetWind()
     {
         Player player = new Player(INTEGER_ZERO);
