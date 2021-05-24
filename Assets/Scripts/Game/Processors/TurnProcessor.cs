@@ -114,7 +114,7 @@ public class TurnProcessor
                 DrawTile(executingPlayer);
                 break;
             case TileActionTypes.CHOW:
-                GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(executingPlayer.GetId()); 
+                GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(executingPlayer.GetId());
                 break;
             default:
                 break;

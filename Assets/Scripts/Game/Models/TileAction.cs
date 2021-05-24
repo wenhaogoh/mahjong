@@ -27,7 +27,7 @@ public class TileAction
             {
                 filteredTiles.AddTile(tile);
             }
-        } 
+        }
         return filteredTiles;
     }
 }

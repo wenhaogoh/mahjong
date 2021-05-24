@@ -79,7 +79,7 @@ public class TilesContainer
             if (chowActions != null)
             {
                 actions.AddRange(chowActions);
-            } 
+            }
         }
         TileAction huAction = GetHuAction(offeredTile);
         if (huAction != null)
@@ -101,7 +101,7 @@ public class TilesContainer
         {
             return null;
         }
-        
+
         List<TileAction> chowActions = new List<TileAction>();
         TileTypes triggerTileType = triggerTile.GetTileType();
 
@@ -113,37 +113,37 @@ public class TilesContainer
             partners[i].SetTileType(triggerTileType);
             partners[i].SetValue(triggerTile.GetValue() + i - 2);
         }
-        
+
         // CHOW Sequence: X X N
-        if (tiles.Contains(partners[0]) && tiles.Contains(partners[1])) 
+        if (tiles.Contains(partners[0]) && tiles.Contains(partners[1]))
         {
             TilesContainer actionTiles = new TilesContainer();
             actionTiles.AddTile(partners[0]);
-            actionTiles.AddTile(partners[1]); 
+            actionTiles.AddTile(partners[1]);
             actionTiles.AddTile(triggerTile);
             chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
         }
 
         // CHOW Sequence: X N X
-        if (tiles.Contains(partners[1]) && tiles.Contains(partners[3])) 
+        if (tiles.Contains(partners[1]) && tiles.Contains(partners[3]))
         {
             TilesContainer actionTiles = new TilesContainer();
             actionTiles.AddTile(partners[1]);
-            actionTiles.AddTile(triggerTile); 
+            actionTiles.AddTile(triggerTile);
             actionTiles.AddTile(partners[3]);
             chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
         }
 
         // CHOW Sequence: N X X
-        if (tiles.Contains(partners[3]) && tiles.Contains(partners[4])) 
+        if (tiles.Contains(partners[3]) && tiles.Contains(partners[4]))
         {
             TilesContainer actionTiles = new TilesContainer();
             actionTiles.AddTile(triggerTile);
-            actionTiles.AddTile(partners[3]); 
-            actionTiles.AddTile(partners[4]); 
+            actionTiles.AddTile(partners[3]);
+            actionTiles.AddTile(partners[4]);
             chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
         }
-        
+
         return chowActions.Any() ? chowActions : null;
     }
     private TileAction GetPongAction(Tile triggerTile)

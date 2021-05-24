@@ -48,10 +48,11 @@ public class Player
             case TileActionTypes.CHOW:
             case TileActionTypes.KONG:
                 flowerTiles.AddTiles(tileAction.GetTiles());
-                if (isFromOffer) 
+                if (isFromOffer)
                 {
                     mainTiles.RemoveTiles(tileAction.GetTilesWithoutTriggerTile());
-                } else 
+                }
+                else
                 {
                     mainTiles.RemoveTiles(tileAction.GetTiles());
                 }

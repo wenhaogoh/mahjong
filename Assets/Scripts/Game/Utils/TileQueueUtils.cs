@@ -23,7 +23,7 @@ public class TileQueueUtils
         {
             Tile bambooTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
             bambooTile.SetTileType(TileTypes.BAMBOO);
-            bambooTile.SetValue(Mathf.FloorToInt(i * 9/148) + 1);
+            bambooTile.SetValue(Mathf.FloorToInt(i * 9 / 148) + 1);
             tiles.Add(bambooTile);
         }
         return tiles;
