@@ -36,7 +36,6 @@ public class TilesContainer
                 this.tiles.Remove(tile);
             }
         }
-
     }
     public void Sort()
     {
@@ -56,7 +55,6 @@ public class TilesContainer
     {
         return tiles.Count();
     }
-
     public List<TileAction> GetPossibleTileActionsFromDrawnTile(Tile drawnTile)
     {
         List<TileAction> actions = new List<TileAction>();
@@ -72,7 +70,6 @@ public class TilesContainer
         }
         return actions;
     }
-
     public List<TileAction> GetPossibleTileActionsFromOfferedTile(Tile offeredTile, bool isFromPreviousPlayer)
     {
         List<TileAction> actions = new List<TileAction>();
@@ -101,7 +98,6 @@ public class TilesContainer
         }
         return actions;
     }
-
     private List<TileAction> GetChowActions(Tile triggerTile)
     {
         if (triggerTile.GetTileType() == TileTypes.HONOUR)
