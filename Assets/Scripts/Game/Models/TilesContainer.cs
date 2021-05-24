@@ -75,7 +75,11 @@ public class TilesContainer
         List<TileAction> actions = new List<TileAction>();
         if (isFromPreviousPlayer)
         {
-            // Add GetChowAction here
+            List<TileAction> chowActions = GetChowActions(offeredTile);
+            if (chowActions != null)
+            {
+                actions.AddRange(chowActions);
+            } 
         }
         TileAction huAction = GetHuAction(offeredTile);
         if (huAction != null)
@@ -90,48 +94,100 @@ public class TilesContainer
         // Add GetPongAction here
         return actions;
     }
-    private TileAction GetPongAction(Tile drawnTile)
+
+    private List<TileAction> GetChowActions(Tile triggerTile)
+    {
+        if (triggerTile.GetTileType() == TileTypes.HONOUR)
+        {
+            return null;
+        }
+        
+        List<TileAction> chowActions = new List<TileAction>();
+        TileTypes triggerTileType = triggerTile.GetTileType();
+
+        // Find CHOW partners of newTile N
+        Tile[] partners = new Tile[5]; // N-2, N-1, N (ignore), N+1, N+2
+        for (int i = 0; i < 5; i++)
+        {
+            partners[i] = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+            partners[i].SetTileType(triggerTileType);
+            partners[i].SetValue(triggerTile.GetValue() + i - 2);
+        }
+        
+        // CHOW Sequence: X X N
+        if (tiles.Contains(partners[0]) && tiles.Contains(partners[1])) 
+        {
+            TilesContainer actionTiles = new TilesContainer();
+            actionTiles.AddTile(partners[0]);
+            actionTiles.AddTile(partners[1]); 
+            actionTiles.AddTile(triggerTile);
+            chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
+        }
+
+        // CHOW Sequence: X N X
+        if (tiles.Contains(partners[1]) && tiles.Contains(partners[3])) 
+        {
+            TilesContainer actionTiles = new TilesContainer();
+            actionTiles.AddTile(partners[1]);
+            actionTiles.AddTile(triggerTile); 
+            actionTiles.AddTile(partners[3]);
+            chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
+        }
+
+        // CHOW Sequence: N X X
+        if (tiles.Contains(partners[3]) && tiles.Contains(partners[4])) 
+        {
+            TilesContainer actionTiles = new TilesContainer();
+            actionTiles.AddTile(triggerTile);
+            actionTiles.AddTile(partners[3]); 
+            actionTiles.AddTile(partners[4]); 
+            chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
+        }
+        
+        return chowActions.Any() ? chowActions : null;
+    }
+    private TileAction GetPongAction(Tile triggerTile)
     {
         TilesContainer actionTiles = new TilesContainer();
-        actionTiles.AddTile(drawnTile);
+        actionTiles.AddTile(triggerTile);
         foreach (Tile tile in tiles)
         {
-            if (tile.Equals(drawnTile))
+            if (tile.Equals(triggerTile))
             {
                 actionTiles.AddTile(tile);
                 if (actionTiles.Count() == 3)
                 {
-                    return new TileAction(TileActionTypes.PONG, actionTiles);
+                    return new TileAction(TileActionTypes.PONG, actionTiles, triggerTile);
                 }
             }
         }
         return null;
     }
-    private TileAction GetKongAction(Tile newTile)
+    private TileAction GetKongAction(Tile triggerTile)
     {
         TilesContainer actionTiles = new TilesContainer();
-        actionTiles.AddTile(newTile);
+        actionTiles.AddTile(triggerTile);
         foreach (Tile tile in tiles)
         {
-            if (tile.Equals(newTile))
+            if (tile.Equals(triggerTile))
             {
                 actionTiles.AddTile(tile);
                 if (actionTiles.Count() == 4)
                 {
-                    return new TileAction(TileActionTypes.KONG, actionTiles);
+                    return new TileAction(TileActionTypes.KONG, actionTiles, triggerTile);
                 }
             }
         }
         return null;
     }
-    private TileAction GetHuAction(Tile newTile)
+    private TileAction GetHuAction(Tile triggerTile)
     {
         List<Tile> waitingTiles = GetWaitingTiles(); // TODO: Optimise + change location (eg. get waiting tiles after discarding tile)
         TilesContainer actionTiles = new TilesContainer();
-        actionTiles.AddTile(newTile);
-        if (waitingTiles.Contains(newTile))
+        actionTiles.AddTile(triggerTile);
+        if (waitingTiles.Contains(triggerTile))
         {
-            return new TileAction(TileActionTypes.HU, actionTiles);
+            return new TileAction(TileActionTypes.HU, actionTiles, triggerTile);
         }
         return null;
     }

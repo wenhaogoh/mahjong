@@ -6,8 +6,10 @@ public class TileActionTests
     public void TileAction()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        TileAction tileAction = new TileAction(TileActionTypes.PONG, tilesContainer);
+        TileAction tileAction = new TileAction(TileActionTypes.PONG, tilesContainer, TileUtils.GetRedDragonTile());
         Assert.AreEqual(tilesContainer, tileAction.GetTiles());
         Assert.AreEqual(TileActionTypes.PONG, tileAction.GetTileActionType());
     }
 }
+
+

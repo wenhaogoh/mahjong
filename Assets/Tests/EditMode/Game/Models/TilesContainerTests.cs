@@ -120,4 +120,39 @@ public class TilesContainerTests
         Assert.AreEqual(1, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile).Count);
         Assert.AreEqual(TileActionTypes.KONG, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile)[0].GetTileActionType());
     }
+
+    [Test]
+    public void GetPossibleActionsFromOfferedTile_Chow_HonourTile()
+    {
+        TilesContainer tilesContainer = new TilesContainer();
+        Tile offeredTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        offeredTile.SetTileType(TileTypes.HONOUR);
+        offeredTile.SetValue((int)HonourTypes.EAST);
+        for (int i = 1; i < 9; i++)
+        {
+            Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+            tile.SetTileType(TileTypes.BAMBOO);
+            tile.SetValue(i);
+            tilesContainer.AddTile(tile);
+        }
+        Assert.AreEqual(0, tilesContainer.GetPossibleTileActionsFromOfferedTile(offeredTile, true).Count);
+    }
+
+    [Test]
+    public void GetPossibleActionsFromOfferedTile_Chow_NonhonourTile()
+    {
+        TilesContainer tilesContainer = new TilesContainer();
+        Tile offeredTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        offeredTile.SetTileType(TileTypes.BAMBOO);
+        offeredTile.SetValue(3);
+        for (int i = 1; i < 9; i++)
+        {
+            Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+            tile.SetTileType(TileTypes.BAMBOO);
+            tile.SetValue(i);
+            tilesContainer.AddTile(tile);
+        }
+        Assert.AreEqual(3, tilesContainer.GetPossibleTileActionsFromOfferedTile(offeredTile, true).Count);
+        Assert.AreEqual(TileActionTypes.CHOW, tilesContainer.GetPossibleTileActionsFromOfferedTile(offeredTile, true)[0].GetTileActionType());
+    }
 }

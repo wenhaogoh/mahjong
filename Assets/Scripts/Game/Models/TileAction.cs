@@ -2,10 +2,13 @@ public class TileAction
 {
     private TileActionTypes tileActionType;
     private TilesContainer tiles;
-    public TileAction(TileActionTypes tileActionType, TilesContainer tiles)
+
+    private Tile triggerTile;
+    public TileAction(TileActionTypes tileActionType, TilesContainer tiles, Tile triggerTile)
     {
         this.tileActionType = tileActionType;
         this.tiles = tiles;
+        this.triggerTile = triggerTile;
     }
     public TileActionTypes GetTileActionType()
     {
@@ -14,5 +17,17 @@ public class TileAction
     public TilesContainer GetTiles()
     {
         return this.tiles;
+    }
+    public TilesContainer GetTilesWithoutTriggerTile()
+    {
+        TilesContainer filteredTiles = new TilesContainer();
+        foreach (Tile tile in tiles.GetTiles())
+        {
+            if (tile != triggerTile)
+            {
+                filteredTiles.AddTile(tile);
+            }
+        } 
+        return filteredTiles;
     }
 }
