@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class Player
 {
     private const int STARTING_TILES_COUNT = 13;
-    private const int MAX_PLAYER_ID = 3;
+    private const int MAX_PLAYER_ID = PlayerUtils.OPPONENT3_ID;
     private int id;
     private Winds wind;
     private TilesContainer mainTiles;
