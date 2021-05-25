@@ -91,10 +91,13 @@ public class TilesContainer
         {
             actions.Add(kongAction);
         }
-        // Add GetPongAction here
+        TileAction pongAction = GetPongAction(offeredTile);
+        if (pongAction != null)
+        {
+            actions.Add(pongAction);
+        }
         return actions;
     }
-
     private List<TileAction> GetChowActions(Tile triggerTile)
     {
         if (triggerTile.GetTileType() == TileTypes.HONOUR)
@@ -311,7 +314,7 @@ public class TilesContainer
             List<Tile> tilesCopy = new List<Tile>(tiles);
             tilesCopy.RemoveAt(0);
             tilesCopy.RemoveAt(index1);
-            tilesCopy.RemoveAt(index2);
+            tilesCopy.RemoveAt(index2); // TODO: Fix index out of range error here
             canHuByRemovingConsecutiveTrio = CanHuHelper(tilesCopy, hasEye);
         }
         return canHuByRemovingEye || canHuByRemovingTriplet || canHuByRemovingConsecutiveTrio;

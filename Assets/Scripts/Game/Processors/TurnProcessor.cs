@@ -114,6 +114,7 @@ public class TurnProcessor
                 DrawTile(executingPlayer);
                 break;
             case TileActionTypes.CHOW:
+            case TileActionTypes.PONG:
                 GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(executingPlayer.GetId());
                 break;
             default:
@@ -127,7 +128,7 @@ public class TurnProcessor
         {
             Request request = requestQueue.GetHighestPriorityRequest();
             requestQueue.Reset();
-            if (request.IsEmpty())
+            if (request.IsEmpty()) // No requests hence turn ends
             {
                 int currentTurnPlayerId = MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState);
                 Player nextTurnPlayer = GetNextPlayer(currentTurnPlayerId);

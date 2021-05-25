@@ -65,7 +65,6 @@ public class PlayerTests
         Assert.AreEqual(4, player.GetFlowerTiles().Count());
         Assert.AreEqual(0, player.GetMainTiles().Count());
     }
-
     [Test]
     public void ExecuteTileAction_Chow()
     {
@@ -83,7 +82,23 @@ public class PlayerTests
         Assert.AreEqual(3, player.GetFlowerTiles().Count());
         Assert.AreEqual(1, player.GetMainTiles().Count());
     }
-
+    [Test]
+    public void ExecuteTileAction_Pong()
+    {
+        Player player = new Player(INTEGER_ZERO);
+        TileQueue tileQueue = new TileQueue();
+        for (int i = 0; i < 3; i++)
+        {
+            player.GetMainTiles().AddTile(TileUtils.GetRedDragonTile());
+        }
+        TilesContainer tilesContainer = new TilesContainer();
+        tilesContainer.AddTiles(player.GetMainTiles());
+        Tile triggerTile = tilesContainer.GetLastTile();
+        TileAction tileAction = new TileAction(TileActionTypes.PONG, tilesContainer, triggerTile);
+        player.ExecuteTileAction(tileAction, triggerTile);
+        Assert.AreEqual(3, player.GetFlowerTiles().Count());
+        Assert.AreEqual(1, player.GetMainTiles().Count());
+    }
     [Test]
     public void SetWind()
     {
