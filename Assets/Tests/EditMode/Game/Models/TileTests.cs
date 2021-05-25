@@ -84,4 +84,15 @@ public class TileTests
         Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
         Assert.True(tile.GetHashCode() == tile.GetHashCode());
     }
+    [Test]
+    public void GetHashCode_DifferentObjects()
+    {
+        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        tile1.SetTileType(TileTypes.BAMBOO);
+        tile1.SetValue(INTEGER_TEN);
+        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        tile2.SetTileType(TileTypes.BAMBOO);
+        tile2.SetValue(INTEGER_TEN);
+        Assert.True(tile1.GetHashCode() == tile2.GetHashCode());
+    }
 }
