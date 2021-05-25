@@ -2,17 +2,16 @@ using NUnit.Framework;
 
 public class PlayerTests
 {
-    private const int INTEGER_ZERO = 0;
     [Test]
     public void Player()
     {
-        Player player = new Player(INTEGER_ZERO);
-        Assert.AreEqual(INTEGER_ZERO, player.GetId());
+        Player player = PlayerUtils.GetPlayer0();
+        Assert.AreEqual(PlayerUtils.PLAYER0_ID, player.GetId());
     }
     [Test]
     public void DrawTile()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         for (int i = 0; i < 109; i++)
         {
@@ -24,7 +23,7 @@ public class PlayerTests
     [Test]
     public void DrawStartingTiles()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         player.DrawStartingTiles(tileQueue);
         Assert.AreEqual(13, player.GetMainTiles().Count());
@@ -32,7 +31,7 @@ public class PlayerTests
     [Test]
     public void DiscardTile()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         TilesContainer tilesContainer = new TilesContainer();
         player.DrawStartingTiles(tileQueue);
@@ -43,7 +42,7 @@ public class PlayerTests
     [Test]
     public void GetPossibleActionsFromDrawnTile_NoActions()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         player.DrawTile(tileQueue);
         Assert.AreEqual(0, player.GetPossibleTileActionsFromDrawnTile().Count);
@@ -51,7 +50,7 @@ public class PlayerTests
     [Test]
     public void ExecuteTileAction_Kong()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         for (int i = 0; i < 4; i++)
         {
@@ -68,7 +67,7 @@ public class PlayerTests
     [Test]
     public void ExecuteTileAction_Chow()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         for (int i = 0; i < 3; i++)
         {
@@ -85,7 +84,7 @@ public class PlayerTests
     [Test]
     public void ExecuteTileAction_Pong()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         TileQueue tileQueue = new TileQueue();
         for (int i = 0; i < 3; i++)
         {
@@ -102,7 +101,7 @@ public class PlayerTests
     [Test]
     public void SetWind()
     {
-        Player player = new Player(INTEGER_ZERO);
+        Player player = PlayerUtils.GetPlayer0();
         player.SetWind(Winds.EAST);
         Assert.AreEqual(Winds.EAST, player.GetWind());
     }

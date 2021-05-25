@@ -21,10 +21,10 @@ public class TurnProcessor
         tileQueue.Randomize();
         discardedTilesContainer = new TilesContainer();
         requestQueue = new RequestQueue();
-        this.player0 = new Player(0);
-        this.opponent1 = new Player(1);
-        this.opponent2 = new Player(2);
-        this.opponent3 = new Player(3);
+        this.player0 = PlayerUtils.GetPlayer0();
+        this.opponent1 = PlayerUtils.GetOpponent1();
+        this.opponent2 = PlayerUtils.GetOpponent2();
+        this.opponent3 = PlayerUtils.GetOpponent3();
         this.players = new Player[] { player0, opponent1, opponent2, opponent3 };
         player0.DrawStartingTiles(tileQueue);
         opponent1.DrawStartingTiles(tileQueue);
@@ -83,7 +83,7 @@ public class TurnProcessor
     private void DrawTile(Player drawingPlayer)
     {
         drawingPlayer.DrawTile(tileQueue);
-        if (drawingPlayer.GetId() == 0)
+        if (drawingPlayer.GetId() == PlayerUtils.PLAYER0_ID)
         {
             GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
         }
@@ -152,7 +152,7 @@ public class TurnProcessor
             {
                 continue;
             }
-            if (player.GetId() == 0)
+            if (player.GetId() == PlayerUtils.PLAYER0_ID)
             {
                 List<TileAction> tileActions = player.GetPossibleTileActionsFromOfferedTile(discardedTile, offeringPlayer);
                 if (tileActions.Count == 0)
