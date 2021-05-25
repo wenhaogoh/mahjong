@@ -15,7 +15,6 @@ public class TileQueueUtils
         }
         return tiles;
     }
-
     public static List<Tile> GenerateTilesForChow()
     {
         List<Tile> tiles = new List<Tile>();

@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class MapperUtils
 {
@@ -10,35 +9,34 @@ public class MapperUtils
             case GameStates.PLAYER0_DRAWING:
             case GameStates.PLAYER0_DISCARDING:
             case GameStates.PLAYER0_OFFERING:
-                return 0;
+                return PlayerUtils.PLAYER0_ID;
             case GameStates.OPPONENT1_DRAWING:
             case GameStates.OPPONENT1_DISCARDING:
             case GameStates.OPPONENT1_OFFERING:
-                return 1;
+                return PlayerUtils.OPPONENT1_ID;
             case GameStates.OPPONENT2_DRAWING:
             case GameStates.OPPONENT2_DISCARDING:
             case GameStates.OPPONENT2_OFFERING:
-                return 2;
+                return PlayerUtils.OPPONENT2_ID;
             case GameStates.OPPONENT3_DRAWING:
             case GameStates.OPPONENT3_DISCARDING:
             case GameStates.OPPONENT3_OFFERING:
-                return 3;
+                return PlayerUtils.OPPONENT3_ID;
             default:
-                Debug.LogWarning("Unable to map game state to player id!");
-                return -1;
+                throw new Exception("Unable to game state to player id!");
         }
     }
     public static GameStates MapPlayerIdToDrawingGameState(int playerId)
     {
         switch (playerId)
         {
-            case 0:
+            case PlayerUtils.PLAYER0_ID:
                 return GameStates.PLAYER0_DRAWING;
-            case 1:
+            case PlayerUtils.OPPONENT1_ID:
                 return GameStates.OPPONENT1_DRAWING;
-            case 2:
+            case PlayerUtils.OPPONENT2_ID:
                 return GameStates.OPPONENT2_DRAWING;
-            case 3:
+            case PlayerUtils.OPPONENT3_ID:
                 return GameStates.OPPONENT3_DRAWING;
             default:
                 throw new Exception("No such player!");
@@ -48,13 +46,13 @@ public class MapperUtils
     {
         switch (playerId)
         {
-            case 0:
+            case PlayerUtils.PLAYER0_ID:
                 return GameStates.PLAYER0_DISCARDING;
-            case 1:
+            case PlayerUtils.OPPONENT1_ID:
                 return GameStates.OPPONENT1_DISCARDING;
-            case 2:
+            case PlayerUtils.OPPONENT2_ID:
                 return GameStates.OPPONENT2_DISCARDING;
-            case 3:
+            case PlayerUtils.OPPONENT3_ID:
                 return GameStates.OPPONENT3_DISCARDING;
             default:
                 throw new Exception("No such player!");
@@ -64,13 +62,13 @@ public class MapperUtils
     {
         switch (playerId)
         {
-            case 0:
+            case PlayerUtils.PLAYER0_ID:
                 return GameStates.PLAYER0_OFFERING;
-            case 1:
+            case PlayerUtils.OPPONENT1_ID:
                 return GameStates.OPPONENT1_OFFERING;
-            case 2:
+            case PlayerUtils.OPPONENT2_ID:
                 return GameStates.OPPONENT2_OFFERING;
-            case 3:
+            case PlayerUtils.OPPONENT3_ID:
                 return GameStates.OPPONENT3_OFFERING;
             default:
                 throw new Exception("No such player!");

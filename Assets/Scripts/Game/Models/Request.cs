@@ -59,8 +59,7 @@ public class Request : IComparable<Request>
             }
             else
             {
-                Debug.LogWarning("This condition should never be entered!");
-                return 0;
+                throw new Exception("Offering player sent request!");
             }
         }
     }

@@ -103,7 +103,7 @@ public class Player
     }
     private bool IsPreviousPlayer(Player player)
     {
-        if (this.id == 0)
+        if (this.id == PlayerUtils.PLAYER0_ID)
         {
             return player.id == MAX_PLAYER_ID;
         }
