@@ -56,11 +56,13 @@ public class TilesContainerController : MonoBehaviour
             {
                 largeTileButtonObject = Instantiate(newLargeTileButtonPrefab);
                 largeTileButtonObject.GetComponentInChildren<TileController>().tile = tile;
+                largeTileButtonObject.GetComponentInChildren<TileController>().index = i;
             }
             else
             {
                 largeTileButtonObject = Instantiate(largeTileButtonPrefab);
                 largeTileButtonObject.GetComponent<TileController>().tile = tile;
+                largeTileButtonObject.GetComponent<TileController>().index = i;
             }
             largeTileButtonObject.transform.SetParent(this.transform);
         }

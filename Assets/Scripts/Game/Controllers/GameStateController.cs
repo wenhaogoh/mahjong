@@ -7,6 +7,7 @@ public class GameStateController : MonoBehaviour
     private const int DISCARD_TIMER_DURATION = 5;
     private const int OFFER_TIMER_DURATION = 5;
     private const int AUTO_PLAY_DELAY = 2;
+    private const int HU_DELAY = 5;
     public TilesContainerController playerMainTilesContainerController;
     public TilesContainerController playerFlowerTilesContainerController;
     public TilesContainerController discardedTilesContainerController;
@@ -19,7 +20,6 @@ public class GameStateController : MonoBehaviour
     private IEnumerator discardTimerCoroutine;
     void Awake()
     {
-        // Singleton Pattern
         if (instance == null)
         {
             instance = this;
@@ -92,7 +92,6 @@ public class GameStateController : MonoBehaviour
                     tileActionsContainerController.DisplayTileAction(tileAction);
                     break;
             }
-
         }
     }
     public void StartDiscardTimerCoroutine()
@@ -104,6 +103,10 @@ public class GameStateController : MonoBehaviour
     {
         offerTimerCoroutine = OfferTimerCoroutine();
         StartCoroutine(offerTimerCoroutine);
+    }
+    public void StartHuTimerCoroutine()
+    {
+        StartCoroutine(HuTimerCoroutine());
     }
     private void ClearTileActionsDisplay()
     {
@@ -139,6 +142,11 @@ public class GameStateController : MonoBehaviour
     {
         yield return new WaitForSeconds(OFFER_TIMER_DURATION);
         ProcessPlayerTileActionRequest(null);
+    }
+    private IEnumerator HuTimerCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(HU_DELAY);
+        turnProcessor.NewGame();
     }
     private IEnumerator AutoPlayCoroutine()
     {

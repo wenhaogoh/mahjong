@@ -111,7 +111,6 @@ public class TurnProcessor
     {
         executingPlayer.ExecuteTileAction(tileAction, isFromOffer);
         GameStateController.instance.RefreshDisplays();
-
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.KONG:
@@ -124,6 +123,10 @@ public class TurnProcessor
                 {
                     GameStateController.instance.StartDiscardTimerCoroutine();
                 }
+                break;
+            case TileActionTypes.HU:
+                GameStateController.instance.gameState = GameStates.PROCESSING;
+                GameStateController.instance.StartHuTimerCoroutine();
                 break;
             default:
                 break;

@@ -6,6 +6,7 @@ public class TileController : MonoBehaviour
     public Tile tile;
     public TextMeshProUGUI type;
     public TextMeshProUGUI value;
+    public int index;
     void Start()
     {
         type.SetText(tile.GetTileType().ToString());
@@ -19,7 +20,6 @@ public class TileController : MonoBehaviour
     {
         if (GameStateController.instance.gameState == GameStates.PLAYER0_DISCARDING)
         {
-            int index = transform.GetSiblingIndex();
             GameStateController.instance.DiscardPlayerTile(index);
         }
     }

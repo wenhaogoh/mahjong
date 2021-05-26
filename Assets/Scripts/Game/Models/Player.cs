@@ -59,7 +59,7 @@ public class Player
                 }
                 break;
             case TileActionTypes.HU:
-                //perform hu action
+                mainTiles.AddTiles(tileAction.GetTiles());
                 break;
             default:
                 break;
