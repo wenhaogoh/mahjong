@@ -29,14 +29,12 @@ public class GameStateController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
     void Start()
     {
         gameState = GameStates.PROCESSING;
         turnProcessor = new TurnProcessor();
         turnProcessor.NewGame();
     }
-    // Update is called once per frame
     void Update()
     {
         switch (gameState)
