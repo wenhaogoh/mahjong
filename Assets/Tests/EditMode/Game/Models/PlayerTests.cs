@@ -60,7 +60,7 @@ public class PlayerTests
         tilesContainer.AddTiles(player.GetMainTiles());
         Tile triggerTile = tilesContainer.GetLastTile();
         TileAction tileAction = new TileAction(TileActionTypes.KONG, tilesContainer, triggerTile);
-        player.ExecuteTileAction(tileAction);
+        player.ExecuteTileAction(tileAction, false);
         Assert.AreEqual(4, player.GetFlowerTiles().Count());
         Assert.AreEqual(0, player.GetMainTiles().Count());
     }

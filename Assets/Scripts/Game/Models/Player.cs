@@ -41,7 +41,7 @@ public class Player
         mainTiles.AddTile(drawnTile);
         return tileActions;
     }
-    public void ExecuteTileAction(TileAction tileAction, bool isFromOffer = false)
+    public void ExecuteTileAction(TileAction tileAction, bool isFromOffer)
     {
         switch (tileAction.GetTileActionType())
         {

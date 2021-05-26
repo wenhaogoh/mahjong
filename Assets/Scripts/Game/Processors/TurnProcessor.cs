@@ -83,13 +83,15 @@ public class TurnProcessor
     }
     private void DrawTile(Player drawingPlayer)
     {
+        bool isPlayer0Drawing = drawingPlayer.GetId() == PlayerUtils.PLAYER0_ID;
         drawingPlayer.DrawTile(tileQueue);
-        if (drawingPlayer.GetId() == PlayerUtils.PLAYER0_ID)
+        if (isPlayer0Drawing)
         {
             GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
             GameStateController.instance.StartDiscardTimerCoroutine();
+            GameStateController.instance.RefreshDisplays(true);
         }
-        GameStateController.instance.RefreshDisplays();
+        GameStateController.instance.RefreshDisplays(isPlayer0Drawing);
         GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(drawingPlayer.GetId());
     }
     private void DiscardTile(int tileIndex, Player discardingPlayer)
