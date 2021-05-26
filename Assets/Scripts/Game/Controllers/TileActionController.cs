@@ -3,29 +3,26 @@ using UnityEngine;
 public class TileActionController : MonoBehaviour
 {
     public TileAction tileAction;
-    // Start is called before the first frame update
     void Start()
     {
 
     }
-
-    // Update is called once per frame
     void Update()
     {
 
     }
     public void OnClick()
     {
-        bool isOpponentOffering = GameStateController.instance.gameState == GameStates.OPPONENT1_OFFERING
-                               || GameStateController.instance.gameState == GameStates.OPPONENT2_OFFERING
-                               || GameStateController.instance.gameState == GameStates.OPPONENT3_OFFERING;
-        if (isOpponentOffering)
+        switch (GameStateController.instance.gameState)
         {
-            GameStateController.instance.ProcessPlayerTileActionRequest(tileAction);
-        }
-        else
-        {
-            GameStateController.instance.ExecutePlayerTileAction(tileAction);
+            case GameStates.OPPONENT1_OFFERING:
+            case GameStates.OPPONENT2_OFFERING:
+            case GameStates.OPPONENT3_OFFERING:
+                GameStateController.instance.ProcessPlayerTileActionRequest(tileAction);
+                break;
+            default:
+                GameStateController.instance.ExecutePlayerTileAction(tileAction);
+                break;
         }
     }
 }

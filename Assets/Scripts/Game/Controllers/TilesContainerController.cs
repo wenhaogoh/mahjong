@@ -5,12 +5,10 @@ public class TilesContainerController : MonoBehaviour
     public GameObject smallTilePrefab;
     public GameObject largeTilePrefab;
     public GameObject largeTileButtonPrefab;
-    // Start is called before the first frame update
     void Start()
     {
 
     }
-    // Update is called once per frame
     void Update()
     {
 
