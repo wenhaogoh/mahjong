@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using UnityEngine;
 using System.Collections.Generic;
 
 public class TurnProcessor
@@ -13,8 +11,6 @@ public class TurnProcessor
     private Player opponent2; // Top
     private Player opponent3; // Left
     private Player[] players;
-    private const int AUTO_PLAY_DELAY = 2;
-
     public void NewGame()
     {
         tileQueue = new TileQueue();
@@ -61,11 +57,16 @@ public class TurnProcessor
     {
         return this.discardedTilesContainer;
     }
-    public void AutoPlay()
+    public void AutoPlayDraw()
     {
         Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
-        GameStateController.instance.gameState = GameStates.PROCESSING;
-        GameStateController.instance.StartCoroutine(AutoPlayCoroutine(player, AUTO_PLAY_DELAY));
+        GameStateController.instance.gameState = GameStates.PROCESSING; // Can only set gameState after mapping gameState to player
+        DrawTile(player);
+    }
+    public void AutoPlayDiscard()
+    {
+        Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
+        DiscardTile(0, player);
     }
     private void SetPlayerWinds(Player player, Winds wind)
     {
@@ -86,6 +87,7 @@ public class TurnProcessor
         if (drawingPlayer.GetId() == PlayerUtils.PLAYER0_ID)
         {
             GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
+            GameStateController.instance.StartDiscardTimerCoroutine();
         }
         GameStateController.instance.RefreshDisplays();
         GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(drawingPlayer.GetId());
@@ -116,6 +118,10 @@ public class TurnProcessor
             case TileActionTypes.CHOW:
             case TileActionTypes.PONG:
                 GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(executingPlayer.GetId());
+                if (executingPlayer.GetId() == PlayerUtils.PLAYER0_ID)
+                {
+                    GameStateController.instance.StartDiscardTimerCoroutine();
+                }
                 break;
             default:
                 break;
@@ -128,7 +134,7 @@ public class TurnProcessor
         {
             Request request = requestQueue.GetHighestPriorityRequest();
             requestQueue.Reset();
-            if (request.IsEmpty()) // No requests hence turn ends
+            if (request.IsEmpty())
             {
                 int currentTurnPlayerId = MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState);
                 Player nextTurnPlayer = GetNextPlayer(currentTurnPlayerId);
@@ -162,6 +168,7 @@ public class TurnProcessor
                 else
                 {
                     GameStateController.instance.DisplayTileActions(tileActions);
+                    GameStateController.instance.StartOfferTimerCoroutine();
                 }
                 continue;
             }
@@ -184,11 +191,5 @@ public class TurnProcessor
             nextPlayerIndex = 0;
         }
         return players[nextPlayerIndex];
-    }
-    private IEnumerator AutoPlayCoroutine(Player player, int delayInSeconds)
-    {
-        DrawTile(player);
-        yield return new WaitForSecondsRealtime(delayInSeconds);
-        DiscardTile(0, player);
     }
 }

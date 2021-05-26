@@ -1,8 +1,12 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class GameStateController : MonoBehaviour
 {
+    private const int DISCARD_TIMER_DURATION = 5;
+    private const int OFFER_TIMER_DURATION = 5;
+    private const int AUTO_PLAY_DELAY = 2;
     public TilesContainerController playerMainTilesContainerController;
     public TilesContainerController playerFlowerTilesContainerController;
     public TilesContainerController discardedTilesContainerController;
@@ -11,7 +15,8 @@ public class GameStateController : MonoBehaviour
     public static GameStateController instance = null;
     public GameStates gameState;
     private TurnProcessor turnProcessor;
-
+    private IEnumerator offerTimerCoroutine;
+    private IEnumerator discardTimerCoroutine;
     void Awake()
     {
         // Singleton Pattern
@@ -40,13 +45,13 @@ public class GameStateController : MonoBehaviour
                 turnProcessor.DrawPlayerTile();
                 break;
             case GameStates.OPPONENT1_DRAWING:
-                turnProcessor.AutoPlay();
+                StartAutoPlayCoroutine();
                 break;
             case GameStates.OPPONENT2_DRAWING:
-                turnProcessor.AutoPlay();
+                StartAutoPlayCoroutine();
                 break;
             case GameStates.OPPONENT3_DRAWING:
-                turnProcessor.AutoPlay();
+                StartAutoPlayCoroutine();
                 break;
             default:
                 break;
@@ -55,16 +60,19 @@ public class GameStateController : MonoBehaviour
     public void DiscardPlayerTile(int index)
     {
         ClearTileActionsDisplay();
+        StopCoroutine(discardTimerCoroutine);
         turnProcessor.DiscardPlayerTile(index);
     }
     public void ExecutePlayerTileAction(TileAction tileAction)
     {
         ClearTileActionsDisplay();
+        StopCoroutine(discardTimerCoroutine);
         turnProcessor.ExecutePlayerTileAction(tileAction);
     }
     public void ProcessPlayerTileActionRequest(TileAction tileAction)
     {
         ClearTileActionsDisplay();
+        StopOfferTimerCoroutine();
         turnProcessor.ProcessPlayerTileActionRequest(tileAction);
     }
     public void RefreshDisplays()
@@ -89,6 +97,16 @@ public class GameStateController : MonoBehaviour
 
         }
     }
+    public void StartDiscardTimerCoroutine()
+    {
+        discardTimerCoroutine = DiscardTimerCoroutine();
+        StartCoroutine(discardTimerCoroutine);
+    }
+    public void StartOfferTimerCoroutine()
+    {
+        offerTimerCoroutine = OfferTimerCoroutine();
+        StartCoroutine(offerTimerCoroutine);
+    }
     private void ClearTileActionsDisplay()
     {
         huActionContainerController.ClearTileActionsDisplay();
@@ -105,5 +123,29 @@ public class GameStateController : MonoBehaviour
     private void DisplayDiscardedTiles()
     {
         discardedTilesContainerController.DisplaySmallTiles(turnProcessor.GetDiscardedTiles());
+    }
+    private void StartAutoPlayCoroutine()
+    {
+        StartCoroutine(AutoPlayCoroutine());
+    }
+    private void StopOfferTimerCoroutine()
+    {
+        StopCoroutine(offerTimerCoroutine);
+    }
+    private IEnumerator DiscardTimerCoroutine()
+    {
+        yield return new WaitForSeconds(DISCARD_TIMER_DURATION);
+        DiscardPlayerTile(0);
+    }
+    private IEnumerator OfferTimerCoroutine()
+    {
+        yield return new WaitForSeconds(OFFER_TIMER_DURATION);
+        ProcessPlayerTileActionRequest(null);
+    }
+    private IEnumerator AutoPlayCoroutine()
+    {
+        turnProcessor.AutoPlayDraw();
+        yield return new WaitForSecondsRealtime(AUTO_PLAY_DELAY);
+        turnProcessor.AutoPlayDiscard();
     }
 }
