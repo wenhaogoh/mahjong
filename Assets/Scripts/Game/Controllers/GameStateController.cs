@@ -73,9 +73,9 @@ public class GameStateController : MonoBehaviour
         StopOfferTimerCoroutine();
         turnProcessor.ProcessPlayerTileActionRequest(tileAction);
     }
-    public void RefreshDisplays()
+    public void RefreshDisplays(bool isAfterDrawingTile = false)
     {
-        DisplayPlayerMainTiles();
+        DisplayPlayerMainTiles(isAfterDrawingTile);
         DisplayPlayerFlowerTiles();
         DisplayDiscardedTiles();
     }
@@ -110,9 +110,9 @@ public class GameStateController : MonoBehaviour
         huActionContainerController.ClearTileActionsDisplay();
         tileActionsContainerController.ClearTileActionsDisplay();
     }
-    private void DisplayPlayerMainTiles()
+    private void DisplayPlayerMainTiles(bool isAfterDrawingTile)
     {
-        playerMainTilesContainerController.DisplayLargeTileButtons(turnProcessor.GetPlayerMainTiles());
+        playerMainTilesContainerController.DisplayLargeTileButtons(turnProcessor.GetPlayerMainTiles(), isAfterDrawingTile);
     }
     private void DisplayPlayerFlowerTiles()
     {

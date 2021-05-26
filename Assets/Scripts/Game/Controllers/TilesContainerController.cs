@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TilesContainerController : MonoBehaviour
 {
     public GameObject smallTilePrefab;
     public GameObject largeTilePrefab;
     public GameObject largeTileButtonPrefab;
+    public GameObject newLargeTileButtonPrefab;
     void Start()
     {
 
@@ -39,16 +41,27 @@ public class TilesContainerController : MonoBehaviour
             largeTileObject.transform.SetParent(this.transform);
         }
     }
-    public void DisplayLargeTileButtons(TilesContainer tilesContainer)
+    public void DisplayLargeTileButtons(TilesContainer tilesContainer, bool isAfterDrawingTile)
     {
+        List<Tile> tiles = tilesContainer.GetTiles();
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
-        foreach (Tile tile in tilesContainer.GetTiles())
+        for (int i = 0; i < tiles.Count; i++)
         {
-            GameObject largeTileButtonObject = Instantiate(largeTileButtonPrefab);
-            largeTileButtonObject.GetComponent<TileController>().tile = tile;
+            Tile tile = tiles[i];
+            GameObject largeTileButtonObject;
+            if (isAfterDrawingTile && i == tiles.Count - 1)
+            {
+                largeTileButtonObject = Instantiate(newLargeTileButtonPrefab);
+                largeTileButtonObject.GetComponentInChildren<TileController>().tile = tile;
+            }
+            else
+            {
+                largeTileButtonObject = Instantiate(largeTileButtonPrefab);
+                largeTileButtonObject.GetComponent<TileController>().tile = tile;
+            }
             largeTileButtonObject.transform.SetParent(this.transform);
         }
     }
