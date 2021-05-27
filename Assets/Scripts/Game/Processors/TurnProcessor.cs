@@ -114,7 +114,7 @@ public class TurnProcessor
             GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
             GameStateController.instance.StartDiscardTimerCoroutine();
         }
-        RefreshAllPlayersTilesDisplay();
+        RefreshAllPlayersTilesDisplay(false, isPlayer0Drawing);
         GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(drawingPlayer.GetId());
     }
     private void DiscardTile(int tileIndex, Player discardingPlayer)
@@ -221,9 +221,9 @@ public class TurnProcessor
         }
         return players[nextPlayerIndex];
     }
-    private void RefreshAllPlayersTilesDisplay(bool showOpponentContent = false)
+    private void RefreshAllPlayersTilesDisplay(bool showOpponentContent = false, bool isAfterDrawingTile = false)
     {
-        GameStateController.instance.RefreshPlayer0TilesDisplays();
+        GameStateController.instance.RefreshPlayer0TilesDisplays(isAfterDrawingTile);
         GameStateController.instance.RefreshOpponent1TilesDisplay(showOpponentContent);
         GameStateController.instance.RefreshOpponent2TilesDisplay(showOpponentContent);
         GameStateController.instance.RefreshOpponent3TilesDisplay(showOpponentContent);
