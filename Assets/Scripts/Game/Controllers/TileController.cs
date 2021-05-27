@@ -7,10 +7,14 @@ public class TileController : MonoBehaviour
     public TextMeshProUGUI type;
     public TextMeshProUGUI value;
     public int index;
+    public bool showTileContent;
     void Start()
     {
-        type.SetText(tile.GetTileType().ToString());
-        value.SetText(tile.GetValue().ToString());
+        if (showTileContent)
+        {
+            type.SetText(tile.GetTileType().ToString());
+            value.SetText(tile.GetValue().ToString());
+        }
     }
     void Update()
     {
@@ -20,7 +24,7 @@ public class TileController : MonoBehaviour
     {
         if (GameStateController.instance.gameState == GameStates.PLAYER0_DISCARDING)
         {
-            GameStateController.instance.DiscardPlayerTile(index);
+            GameStateController.instance.DiscardPlayer0Tile(index);
         }
     }
 }

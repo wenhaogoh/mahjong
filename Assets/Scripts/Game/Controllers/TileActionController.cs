@@ -18,10 +18,10 @@ public class TileActionController : MonoBehaviour
             case GameStates.OPPONENT1_OFFERING:
             case GameStates.OPPONENT2_OFFERING:
             case GameStates.OPPONENT3_OFFERING:
-                GameStateController.instance.ProcessPlayerTileActionRequest(tileAction);
+                GameStateController.instance.ProcessPlayer0TileActionRequest(tileAction);
                 break;
             default:
-                GameStateController.instance.ExecutePlayerTileAction(tileAction);
+                GameStateController.instance.ExecutePlayer0TileAction(tileAction);
                 break;
         }
     }

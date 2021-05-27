@@ -8,8 +8,14 @@ public class GameStateController : MonoBehaviour
     private const int OFFER_TIMER_DURATION = 5;
     private const int AUTO_PLAY_DELAY = 2;
     private const int HU_DELAY = 5;
-    public TilesContainerController playerMainTilesContainerController;
-    public TilesContainerController playerFlowerTilesContainerController;
+    public TilesContainerController player0MainTilesContainerController;
+    public TilesContainerController player0FlowerTilesContainerController;
+    public TilesContainerController opponent1MainTilesContainerController;
+    public TilesContainerController opponent1FlowerTilesContainerController;
+    public TilesContainerController opponent2MainTilesContainerController;
+    public TilesContainerController opponent2FlowerTilesContainerController;
+    public TilesContainerController opponent3MainTilesContainerController;
+    public TilesContainerController opponent3FlowerTilesContainerController;
     public TilesContainerController discardedTilesContainerController;
     public TileActionsContainerController huActionContainerController;
     public TileActionsContainerController tileActionsContainerController;
@@ -40,7 +46,7 @@ public class GameStateController : MonoBehaviour
         switch (gameState)
         {
             case GameStates.PLAYER0_DRAWING:
-                turnProcessor.DrawPlayerTile();
+                turnProcessor.DrawPlayer0Tile();
                 break;
             case GameStates.OPPONENT1_DRAWING:
                 StartAutoPlayCoroutine();
@@ -55,28 +61,46 @@ public class GameStateController : MonoBehaviour
                 break;
         }
     }
-    public void DiscardPlayerTile(int index)
+    public void DiscardPlayer0Tile(int index)
     {
         ClearTileActionsDisplay();
         StopCoroutine(discardTimerCoroutine);
-        turnProcessor.DiscardPlayerTile(index);
+        turnProcessor.DiscardPlayer0Tile(index);
     }
-    public void ExecutePlayerTileAction(TileAction tileAction)
+    public void ExecutePlayer0TileAction(TileAction tileAction)
     {
         ClearTileActionsDisplay();
         StopCoroutine(discardTimerCoroutine);
-        turnProcessor.ExecutePlayerTileAction(tileAction);
+        turnProcessor.ExecutePlayer0TileAction(tileAction);
     }
-    public void ProcessPlayerTileActionRequest(TileAction tileAction)
+    public void ProcessPlayer0TileActionRequest(TileAction tileAction)
     {
         ClearTileActionsDisplay();
         StopOfferTimerCoroutine();
-        turnProcessor.ProcessPlayerTileActionRequest(tileAction);
+        turnProcessor.ProcessPlayer0TileActionRequest(tileAction);
     }
-    public void RefreshDisplays(bool isAfterDrawingTile = false)
+    public void RefreshPlayer0TilesDisplays(bool isAfterDrawingTile = false)
     {
-        DisplayPlayerMainTiles(isAfterDrawingTile);
-        DisplayPlayerFlowerTiles();
+        DisplayPlayer0MainTiles(isAfterDrawingTile);
+        DisplayPlayer0FlowerTiles();
+    }
+    public void RefreshOpponent1TilesDisplay(bool showContent)
+    {
+        DisplayOpponent1MainTiles(showContent);
+        DisplayOpponent1FlowerTiles();
+    }
+    public void RefreshOpponent2TilesDisplay(bool showContent)
+    {
+        DisplayOpponent2MainTiles(showContent);
+        DisplayOpponent2FlowerTiles();
+    }
+    public void RefreshOpponent3TilesDisplay(bool showContent)
+    {
+        DisplayOpponent3MainTiles(showContent);
+        DisplayOpponent3FlowerTiles();
+    }
+    public void RefreshDiscardedTilesDisplays()
+    {
         DisplayDiscardedTiles();
     }
     public void DisplayTileActions(List<TileAction> tileActions)
@@ -113,13 +137,37 @@ public class GameStateController : MonoBehaviour
         huActionContainerController.ClearTileActionsDisplay();
         tileActionsContainerController.ClearTileActionsDisplay();
     }
-    private void DisplayPlayerMainTiles(bool isAfterDrawingTile)
+    private void DisplayPlayer0MainTiles(bool isAfterDrawingTile)
     {
-        playerMainTilesContainerController.DisplayLargeTileButtons(turnProcessor.GetPlayerMainTiles(), isAfterDrawingTile);
+        player0MainTilesContainerController.DisplayLargeTileButtons(turnProcessor.GetPlayer0MainTiles(), isAfterDrawingTile);
     }
-    private void DisplayPlayerFlowerTiles()
+    private void DisplayPlayer0FlowerTiles()
     {
-        playerFlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetPlayerFlowerTiles());
+        player0FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetPlayer0FlowerTiles());
+    }
+    private void DisplayOpponent1MainTiles(bool showContent)
+    {
+        opponent1MainTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent1MainTiles(), showContent);
+    }
+    private void DisplayOpponent1FlowerTiles()
+    {
+        opponent1FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent1FlowerTiles());
+    }
+    private void DisplayOpponent2MainTiles(bool showContent)
+    {
+        opponent2MainTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent2MainTiles(), showContent);
+    }
+    private void DisplayOpponent2FlowerTiles()
+    {
+        opponent2FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent2FlowerTiles());
+    }
+    private void DisplayOpponent3MainTiles(bool showContent)
+    {
+        opponent3MainTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent3MainTiles(), showContent);
+    }
+    private void DisplayOpponent3FlowerTiles()
+    {
+        opponent1FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent3FlowerTiles());
     }
     private void DisplayDiscardedTiles()
     {
@@ -136,12 +184,12 @@ public class GameStateController : MonoBehaviour
     private IEnumerator DiscardTimerCoroutine()
     {
         yield return new WaitForSeconds(DISCARD_TIMER_DURATION);
-        DiscardPlayerTile(0);
+        DiscardPlayer0Tile(0);
     }
     private IEnumerator OfferTimerCoroutine()
     {
         yield return new WaitForSeconds(OFFER_TIMER_DURATION);
-        ProcessPlayerTileActionRequest(null);
+        ProcessPlayer0TileActionRequest(null);
     }
     private IEnumerator HuTimerCoroutine()
     {

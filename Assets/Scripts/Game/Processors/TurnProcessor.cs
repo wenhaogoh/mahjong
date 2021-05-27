@@ -27,31 +27,55 @@ public class TurnProcessor
         opponent2.DrawStartingTiles(tileQueue);
         opponent3.DrawStartingTiles(tileQueue);
         SetPlayerWinds(player0, Winds.EAST);
-        GameStateController.instance.RefreshDisplays();
+        RefreshAllPlayersTilesDisplay();
     }
-    public void DrawPlayerTile()
+    public void DrawPlayer0Tile()
     {
         DrawTile(player0);
     }
-    public void DiscardPlayerTile(int index)
+    public void DiscardPlayer0Tile(int index)
     {
         DiscardTile(index, player0);
     }
-    public void ExecutePlayerTileAction(TileAction tileAction)
+    public void ExecutePlayer0TileAction(TileAction tileAction)
     {
         ExecuteTileAction(tileAction, player0);
     }
-    public void ProcessPlayerTileActionRequest(TileAction tileAction)
+    public void ProcessPlayer0TileActionRequest(TileAction tileAction)
     {
         ProcessTileActionRequest(tileAction, player0);
     }
-    public TilesContainer GetPlayerMainTiles()
+    public TilesContainer GetPlayer0MainTiles()
     {
         return this.player0.GetMainTiles();
     }
-    public TilesContainer GetPlayerFlowerTiles()
+    public TilesContainer GetPlayer0FlowerTiles()
     {
         return this.player0.GetFlowerTiles();
+    }
+    public TilesContainer GetOpponent1MainTiles()
+    {
+        return this.opponent1.GetMainTiles();
+    }
+    public TilesContainer GetOpponent1FlowerTiles()
+    {
+        return this.opponent1.GetFlowerTiles();
+    }
+    public TilesContainer GetOpponent2MainTiles()
+    {
+        return this.opponent2.GetMainTiles();
+    }
+    public TilesContainer GetOpponent2FlowerTiles()
+    {
+        return this.opponent2.GetFlowerTiles();
+    }
+    public TilesContainer GetOpponent3MainTiles()
+    {
+        return this.opponent3.GetMainTiles();
+    }
+    public TilesContainer GetOpponent3FlowerTiles()
+    {
+        return this.opponent3.GetFlowerTiles();
     }
     public TilesContainer GetDiscardedTiles()
     {
@@ -89,9 +113,8 @@ public class TurnProcessor
         {
             GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
             GameStateController.instance.StartDiscardTimerCoroutine();
-            GameStateController.instance.RefreshDisplays(true);
         }
-        GameStateController.instance.RefreshDisplays(isPlayer0Drawing);
+        RefreshAllPlayersTilesDisplay();
         GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(drawingPlayer.GetId());
     }
     private void DiscardTile(int tileIndex, Player discardingPlayer)
@@ -99,7 +122,7 @@ public class TurnProcessor
         GameStateController.instance.gameState = GameStates.PROCESSING;
         discardingPlayer.DiscardTile(tileIndex, discardedTilesContainer);
         discardingPlayer.SortTiles();
-        GameStateController.instance.RefreshDisplays();
+        RefreshAllPlayersTilesDisplay();
         Tile discardedTile = discardedTilesContainer.GetLastTile();
         Offer(discardedTile, discardingPlayer);
     }
@@ -110,7 +133,7 @@ public class TurnProcessor
     private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, bool isFromOffer = false)
     {
         executingPlayer.ExecuteTileAction(tileAction, isFromOffer);
-        GameStateController.instance.RefreshDisplays();
+        RefreshAllPlayersTilesDisplay();
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.KONG:
@@ -148,6 +171,7 @@ public class TurnProcessor
             else
             {
                 discardedTilesContainer.RemoveLastTile();
+                RefreshAllPlayersTilesDisplay();
                 ExecuteRequest(request);
             }
         }
@@ -196,5 +220,13 @@ public class TurnProcessor
             nextPlayerIndex = 0;
         }
         return players[nextPlayerIndex];
+    }
+    private void RefreshAllPlayersTilesDisplay(bool showOpponentContent = false)
+    {
+        GameStateController.instance.RefreshPlayer0TilesDisplays();
+        GameStateController.instance.RefreshOpponent1TilesDisplay(showOpponentContent);
+        GameStateController.instance.RefreshOpponent2TilesDisplay(showOpponentContent);
+        GameStateController.instance.RefreshOpponent3TilesDisplay(showOpponentContent);
+        GameStateController.instance.RefreshDiscardedTilesDisplays();
     }
 }
