@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class GameStateController : MonoBehaviour
 {
-    private const int DISCARD_TIMER_DURATION = 5;
-    private const int OFFER_TIMER_DURATION = 5;
-    private const int AUTO_PLAY_DELAY = 2;
-    private const int HU_DELAY = 5;
+    public const int DISCARD_TIMER_DURATION = 5;
+    public const int OFFER_TIMER_DURATION = 5;
+    public const int AUTO_PLAY_DELAY = 2;
+    public const int HU_DELAY = 5;
     public TilesContainerController player0MainTilesContainerController;
     public TilesContainerController player0FlowerTilesContainerController;
     public TilesContainerController opponent1MainTilesContainerController;

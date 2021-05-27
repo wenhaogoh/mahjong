@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 5772177112062296152}
   - component: {fileID: 205010825935008857}
   m_Layer: 5
-  m_Name: Large Tile Button
+  m_Name: LargeTileButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

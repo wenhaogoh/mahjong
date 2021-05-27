@@ -198,6 +198,7 @@ MonoBehaviour:
   smallTilePrefab: {fileID: 3469749164713405907, guid: ed185f2a38da247aaab312b84d27e3c4, type: 3}
   largeTilePrefab: {fileID: 7223202463833215339, guid: e3493d8d1f43743c69bae5f0c50611c1, type: 3}
   largeTileButtonPrefab: {fileID: 2251496015201514531, guid: d9974453ac0694137aff63e64a39313f, type: 3}
+  newLargeTileButtonPrefab: {fileID: 1715024417590907641, guid: 557e0ad89ae934e77af1eae216201449, type: 3}
 --- !u!114 &2857084066851267562
 MonoBehaviour:
   m_ObjectHideFlags: 0
