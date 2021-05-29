@@ -180,6 +180,7 @@ public class TurnProcessor
                 break;
             case TileActionTypes.HU:
                 GameStateController.instance.gameState = GameStates.PROCESSING;
+                RefreshAllPlayersTilesDisplay(true);
                 GameStateController.instance.StartHuTimerCoroutine(executingPlayer.GetId());
                 break;
             default:
