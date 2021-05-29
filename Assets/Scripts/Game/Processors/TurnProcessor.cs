@@ -13,7 +13,7 @@ public class TurnProcessor
     private Player[] players;
     public void NewGame()
     {
-        tileQueue = new TileQueue();
+        tileQueue = TileQueue.GetRandomizedTileQueue();
         tileQueue.Randomize();
         discardedTilesContainer = new TilesContainer();
         requestQueue = new RequestQueue();
@@ -27,6 +27,7 @@ public class TurnProcessor
         opponent2.DrawStartingTiles(tileQueue);
         opponent3.DrawStartingTiles(tileQueue);
         SetPlayerWinds(player0, Winds.EAST);
+        StartGame();
         RefreshAllPlayersTilesDisplay();
     }
     public void DrawPlayer0Tile()
@@ -92,18 +93,51 @@ public class TurnProcessor
         Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
         DiscardTile(0, player);
     }
+    public void NextRound(int huPlayerId)
+    {
+        tileQueue = TileQueue.GetRandomizedTileQueue();
+        foreach (Player player in players)
+        {
+            player.Reset();
+            player.DrawStartingTiles(tileQueue);
+        }
+        SetPlayerWindsAfterHu(huPlayerId);
+        StartGame();
+        RefreshAllPlayersTilesDisplay();
+    }
     private void SetPlayerWinds(Player player, Winds wind)
     {
         for (int i = 0; i < 4; i++)
         {
-            if (wind == Winds.EAST)
-            {
-                GameStateController.instance.gameState = (GameStates)player.GetId();
-            }
             player.SetWind(wind);
             player = GetNextPlayer(player);
             wind = wind.Next<Winds>();
         }
+    }
+    private void StartGame()
+    {
+        Player eastWindPlayer = GetEastWindPlayer();
+        GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDrawingGameState(eastWindPlayer.GetId());
+    }
+    private void SetPlayerWindsAfterHu(int huPlayerId)
+    {
+        Player currentEastWindPlayer = GetEastWindPlayer();
+        if (currentEastWindPlayer.GetId() == huPlayerId)
+        {
+            return;
+        }
+        SetPlayerWinds(GetNextPlayer(currentEastWindPlayer), Winds.EAST);
+    }
+    private Player GetEastWindPlayer()
+    {
+        foreach (Player player in players)
+        {
+            if (player.GetWind() == Winds.EAST)
+            {
+                return player;
+            }
+        }
+        throw new Exception("Unable to find east wind player!");
     }
     private void DrawTile(Player drawingPlayer)
     {
@@ -149,7 +183,7 @@ public class TurnProcessor
                 break;
             case TileActionTypes.HU:
                 GameStateController.instance.gameState = GameStates.PROCESSING;
-                GameStateController.instance.StartHuTimerCoroutine();
+                GameStateController.instance.StartHuTimerCoroutine(executingPlayer.GetId());
                 break;
             default:
                 break;

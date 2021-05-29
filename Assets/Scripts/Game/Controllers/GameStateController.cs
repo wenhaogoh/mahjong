@@ -128,9 +128,9 @@ public class GameStateController : MonoBehaviour
         offerTimerCoroutine = OfferTimerCoroutine();
         StartCoroutine(offerTimerCoroutine);
     }
-    public void StartHuTimerCoroutine()
+    public void StartHuTimerCoroutine(int huPlayerId)
     {
-        StartCoroutine(HuTimerCoroutine());
+        StartCoroutine(HuTimerCoroutine(huPlayerId));
     }
     private void ClearTileActionsDisplay()
     {
@@ -191,10 +191,10 @@ public class GameStateController : MonoBehaviour
         yield return new WaitForSeconds(OFFER_TIMER_DURATION);
         ProcessPlayer0TileActionRequest(null);
     }
-    private IEnumerator HuTimerCoroutine()
+    private IEnumerator HuTimerCoroutine(int huPlayerId)
     {
         yield return new WaitForSecondsRealtime(HU_DELAY);
-        turnProcessor.NewGame();
+        turnProcessor.NextRound(huPlayerId);
     }
     private IEnumerator AutoPlayCoroutine()
     {

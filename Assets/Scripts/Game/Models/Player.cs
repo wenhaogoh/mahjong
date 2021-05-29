@@ -59,7 +59,10 @@ public class Player
                 }
                 break;
             case TileActionTypes.HU:
-                mainTiles.AddTiles(tileAction.GetTiles());
+                if (isFromOffer)
+                {
+                    mainTiles.AddTiles(tileAction.GetTiles());
+                }
                 break;
             default:
                 break;
@@ -93,6 +96,11 @@ public class Player
     public int GetId()
     {
         return this.id;
+    }
+    public void Reset()
+    {
+        this.mainTiles = new TilesContainer();
+        this.flowerTiles = new TilesContainer();
     }
     private void DrawTiles(int count, TileQueue tileQueue)
     {
