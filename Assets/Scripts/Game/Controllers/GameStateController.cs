@@ -16,7 +16,7 @@ public class GameStateController : MonoBehaviour
     public TilesContainerController opponent2FlowerTilesContainerController;
     public TilesContainerController opponent3MainTilesContainerController;
     public TilesContainerController opponent3FlowerTilesContainerController;
-    public TilesContainerController discardedTilesContainerController;
+    public DiscardedTilesContainerController discardedTilesContainerController;
     public TileActionsContainerController huActionContainerController;
     public TileActionsContainerController tileActionsContainerController;
     public static GameStateController instance = null;
@@ -99,10 +99,6 @@ public class GameStateController : MonoBehaviour
         DisplayOpponent3MainTiles(showContent);
         DisplayOpponent3FlowerTiles();
     }
-    public void RefreshDiscardedTilesDisplays()
-    {
-        DisplayDiscardedTiles();
-    }
     public void DisplayTileActions(List<TileAction> tileActions)
     {
         foreach (TileAction tileAction in tileActions)
@@ -117,6 +113,10 @@ public class GameStateController : MonoBehaviour
                     break;
             }
         }
+    }
+    public void RemoveLastDiscardedTile()
+    {
+        discardedTilesContainerController.RemoveLastDiscardedTile();
     }
     public void StartDiscardTimerCoroutine()
     {
@@ -169,9 +169,9 @@ public class GameStateController : MonoBehaviour
     {
         opponent1FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent3FlowerTiles());
     }
-    private void DisplayDiscardedTiles()
+    public void DisplayDiscardedTile(Tile discardedTile, int discardingPlayerId)
     {
-        discardedTilesContainerController.DisplaySmallTiles(turnProcessor.GetDiscardedTiles());
+        discardedTilesContainerController.DiscardTile(discardedTile, discardingPlayerId);
     }
     private void StartAutoPlayCoroutine()
     {

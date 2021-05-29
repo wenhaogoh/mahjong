@@ -34,7 +34,7 @@ public class GameStateControllerTests
         gameStateController.opponent2FlowerTilesContainerController = GetTilesContainerController();
         gameStateController.opponent3MainTilesContainerController = GetTilesContainerController();
         gameStateController.opponent3FlowerTilesContainerController = GetTilesContainerController();
-        gameStateController.discardedTilesContainerController = GetTilesContainerController();
+        gameStateController.discardedTilesContainerController = GetDiscardedTilesContainerController();
         gameStateController.huActionContainerController = GetTileActionsContainerController();
         gameStateController.tileActionsContainerController = GetTileActionsContainerController();
         return gameStateController;
@@ -49,6 +49,14 @@ public class GameStateControllerTests
         tilesContainerController.largeTileButtonPrefab = Resources.Load("Prefabs/LargeTileButton") as GameObject;
         tilesContainerController.newLargeTileButtonPrefab = Resources.Load("Prefabs/NewLargeTileButton") as GameObject;
         return tilesContainerController;
+    }
+    private DiscardedTilesContainerController GetDiscardedTilesContainerController()
+    {
+        GameObject discardedTilesContainerGameObject = new GameObject();
+        discardedTilesContainerGameObject.AddComponent<DiscardedTilesContainerController>();
+        DiscardedTilesContainerController discardedTilesContainerController = discardedTilesContainerGameObject.GetComponent<DiscardedTilesContainerController>();
+        discardedTilesContainerController.discardedTilePrefab = Resources.Load("Prefabs/DiscardedTile") as GameObject;
+        return discardedTilesContainerController;
     }
     private TileActionsContainerController GetTileActionsContainerController()
     {

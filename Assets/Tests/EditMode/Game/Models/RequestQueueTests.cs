@@ -1,11 +1,12 @@
 using NUnit.Framework;
+using NSubstitute;
 
 public class RequestQueueTests
 {
     [Test]
     public void GetHighestPriorityRequest()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.PLAYER0_OFFERING;
         Player player0 = PlayerUtils.GetPlayer0();
         Player opponent1 = PlayerUtils.GetOpponent1();
@@ -24,7 +25,7 @@ public class RequestQueueTests
     [Test]
     public void IsFull()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.PLAYER0_OFFERING;
         Player player0 = PlayerUtils.GetPlayer0();
         Player opponent1 = PlayerUtils.GetOpponent1();
@@ -43,7 +44,7 @@ public class RequestQueueTests
     [Test]
     public void Reset()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.PLAYER0_OFFERING;
         Player player0 = PlayerUtils.GetPlayer0();
         Player opponent1 = PlayerUtils.GetOpponent1();
