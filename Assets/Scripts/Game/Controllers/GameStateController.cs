@@ -114,6 +114,10 @@ public class GameStateController : MonoBehaviour
             }
         }
     }
+    public void RemoveLastDiscardedTile()
+    {
+        discardedTilesContainerController.RemoveLastDiscardedTile();
+    }
     public void StartDiscardTimerCoroutine()
     {
         discardTimerCoroutine = DiscardTimerCoroutine();

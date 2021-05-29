@@ -40,6 +40,10 @@ public class DiscardedTilesContainerController : MonoBehaviour
                 break;
         }
     }
+    public void RemoveLastDiscardedTile()
+    {
+        Destroy(transform.GetChild(transform.childCount - 1).gameObject);
+    }
     private void SpawnTile(Tile discardedTile, Vector3 spawnPoint, Vector2 velocity, float angularVelocity, Quaternion quaternion)
     {
         GameObject discardedTileObject = Instantiate(discardedTilePrefab, spawnPoint, quaternion);

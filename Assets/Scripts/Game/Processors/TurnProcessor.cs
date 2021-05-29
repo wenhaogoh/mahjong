@@ -203,7 +203,7 @@ public class TurnProcessor
             else
             {
                 discardedTilesContainer.RemoveLastTile();
-                RefreshAllPlayersTilesDisplay();
+                GameStateController.instance.RemoveLastDiscardedTile();
                 ExecuteRequest(request);
             }
         }
