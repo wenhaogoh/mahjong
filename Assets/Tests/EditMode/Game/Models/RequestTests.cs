@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using System;
-
+using NSubstitute;
 public class RequestTests
 {
     [Test]
@@ -46,7 +46,7 @@ public class RequestTests
     [Test]
     public void CompareTo_SameTile_DifferentPlayer_Player0Turn()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.PLAYER0_OFFERING;
         Player opponent1 = PlayerUtils.GetPlayer(PlayerUtils.OPPONENT1_ID);
         Player opponent2 = PlayerUtils.GetPlayer(PlayerUtils.OPPONENT2_ID);
@@ -64,7 +64,7 @@ public class RequestTests
     [Test]
     public void CompareTo_SameTile_DifferentPlayer_Opponent1Turn()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.OPPONENT1_OFFERING;
         Player player0 = PlayerUtils.GetPlayer(PlayerUtils.PLAYER0_ID);
         Player opponent2 = PlayerUtils.GetPlayer(PlayerUtils.OPPONENT2_ID);
@@ -82,7 +82,7 @@ public class RequestTests
     [Test]
     public void CompareTo_SameTile_DifferentPlayer_Opponent2Turn()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.OPPONENT2_OFFERING;
         Player player0 = PlayerUtils.GetPlayer(PlayerUtils.PLAYER0_ID);
         Player opponent1 = PlayerUtils.GetPlayer(PlayerUtils.OPPONENT1_ID);
@@ -100,7 +100,7 @@ public class RequestTests
     [Test]
     public void CompareTo_SameTile_DifferentPlayer_Opponent3Turn()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.OPPONENT3_OFFERING;
         Player player0 = PlayerUtils.GetPlayer(PlayerUtils.PLAYER0_ID);
         Player opponent1 = PlayerUtils.GetPlayer(PlayerUtils.OPPONENT1_ID);
@@ -118,7 +118,7 @@ public class RequestTests
     [Test]
     public void CompareTo_SameTile_OfferingPlayerSentRequest()
     {
-        GameStateController.instance = new GameStateController();
+        GameStateController.instance = Substitute.For<GameStateController>();
         GameStateController.instance.gameState = GameStates.PLAYER0_OFFERING;
         Player player0 = PlayerUtils.GetPlayer(PlayerUtils.PLAYER0_ID);
         Player opponent1 = PlayerUtils.GetPlayer(PlayerUtils.OPPONENT1_ID);

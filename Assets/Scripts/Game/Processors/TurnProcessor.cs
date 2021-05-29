@@ -78,10 +78,6 @@ public class TurnProcessor
     {
         return this.opponent3.GetFlowerTiles();
     }
-    public TilesContainer GetDiscardedTiles()
-    {
-        return this.discardedTilesContainer;
-    }
     public void AutoPlayDraw()
     {
         Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
@@ -157,6 +153,7 @@ public class TurnProcessor
         discardingPlayer.DiscardTile(tileIndex, discardedTilesContainer);
         discardingPlayer.SortTiles();
         RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.DisplayDiscardedTile(discardedTilesContainer.GetLastTile(), discardingPlayer.GetId());
         Tile discardedTile = discardedTilesContainer.GetLastTile();
         Offer(discardedTile, discardingPlayer);
     }
@@ -261,6 +258,5 @@ public class TurnProcessor
         GameStateController.instance.RefreshOpponent1TilesDisplay(showOpponentContent);
         GameStateController.instance.RefreshOpponent2TilesDisplay(showOpponentContent);
         GameStateController.instance.RefreshOpponent3TilesDisplay(showOpponentContent);
-        GameStateController.instance.RefreshDiscardedTilesDisplays();
     }
 }
