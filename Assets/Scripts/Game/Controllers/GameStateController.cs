@@ -6,6 +6,7 @@ public class GameStateController : MonoBehaviour
 {
     public const int DISCARD_TIMER_DURATION = 5;
     public const int OFFER_TIMER_DURATION = 5;
+    public const int PRE_GAME_DELAY = 2;
     public const int AUTO_PLAY_DELAY = 2;
     public const int HU_DELAY = 5;
     public TilesContainerController player0MainTilesContainerController;
@@ -204,7 +205,7 @@ public class GameStateController : MonoBehaviour
     private IEnumerator PreGameCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
     {
         tileQueueContainersController.Reset(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles);
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
         turnProcessor.StartGame();
         RefreshAllPlayersTilesDisplay();
     }

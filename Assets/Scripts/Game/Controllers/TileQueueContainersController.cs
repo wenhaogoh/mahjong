@@ -12,14 +12,7 @@ public class TileQueueContainersController : MonoBehaviour
     private Deque<GameObject> tileQueueTileGameObjects;
     void Start()
     {
-        tileQueueContainerControllers = new TileQueueContainerController[]
-        {
-            tileQueueContainerController0,
-            tileQueueContainerController1,
-            tileQueueContainerController2,
-            tileQueueContainerController3
-        };
-        tileQueueTileGameObjects = new Deque<GameObject>();
+
     }
     void Update()
     {
@@ -102,6 +95,14 @@ public class TileQueueContainersController : MonoBehaviour
     }
     private IEnumerator ResetCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
     {
+        tileQueueContainerControllers = new TileQueueContainerController[]
+        {
+            tileQueueContainerController0,
+            tileQueueContainerController1,
+            tileQueueContainerController2,
+            tileQueueContainerController3
+        };
+        tileQueueTileGameObjects = new Deque<GameObject>();
         AddGridLayoutGroupComponents();
         int eastWindPlayerId = diceValueForPlayerWinds % 4;
         switch (eastWindPlayerId)
