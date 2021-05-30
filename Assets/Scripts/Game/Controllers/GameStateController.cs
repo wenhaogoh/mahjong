@@ -119,9 +119,9 @@ public class GameStateController : MonoBehaviour
     {
         StartCoroutine(PreGameCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
     }
-    public void StartNextRoundCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    public void StartNextRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
     {
-        StartCoroutine(NextRoundCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
+        StartCoroutine(NextRoundCoroutine(eastWindPlayerId, diceValueForWhereToStartDrawingTiles));
     }
     public void StartDiscardTimerCoroutine()
     {

@@ -93,9 +93,10 @@ public class TurnProcessor
         {
             player.Reset();
         }
-        int diceValueForWhereToStartDrawingTiles = RollDice();
         SetPlayerWindsAfterHu(huPlayerId);
-        GameStateController.instance.StartNextRoundCoroutine(huPlayerId, diceValueForWhereToStartDrawingTiles);
+        int diceValueForWhereToStartDrawingTiles = RollDice();
+        int eastWindPlayerId = GetNextPlayer(huPlayerId).GetId();
+        GameStateController.instance.StartNextRoundCoroutine(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
     }
     public void StartGame()
     {
