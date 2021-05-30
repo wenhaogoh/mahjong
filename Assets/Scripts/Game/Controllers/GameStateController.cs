@@ -6,6 +6,7 @@ public class GameStateController : MonoBehaviour
 {
     public const int DISCARD_TIMER_DURATION = 5;
     public const int OFFER_TIMER_DURATION = 5;
+    public const int PRE_GAME_DELAY = 2;
     public const int AUTO_PLAY_DELAY = 2;
     public const int HU_DELAY = 5;
     public TilesContainerController player0MainTilesContainerController;
@@ -19,6 +20,7 @@ public class GameStateController : MonoBehaviour
     public DiscardedTilesContainerController discardedTilesContainerController;
     public TileActionsContainerController huActionContainerController;
     public TileActionsContainerController tileActionsContainerController;
+    public TileQueueContainersController tileQueueContainersController;
     public static GameStateController instance = null;
     public GameStates gameState;
     private TurnProcessor turnProcessor;
@@ -79,25 +81,12 @@ public class GameStateController : MonoBehaviour
         StopOfferTimerCoroutine();
         turnProcessor.ProcessPlayer0TileActionRequest(tileAction);
     }
-    public void RefreshPlayer0TilesDisplays(bool isAfterDrawingTile = false)
+    public void RefreshAllPlayersTilesDisplay(bool showOpponentContent = false, bool isAfterDrawingTile = false)
     {
-        DisplayPlayer0MainTiles(isAfterDrawingTile);
-        DisplayPlayer0FlowerTiles();
-    }
-    public void RefreshOpponent1TilesDisplay(bool showContent)
-    {
-        DisplayOpponent1MainTiles(showContent);
-        DisplayOpponent1FlowerTiles();
-    }
-    public void RefreshOpponent2TilesDisplay(bool showContent)
-    {
-        DisplayOpponent2MainTiles(showContent);
-        DisplayOpponent2FlowerTiles();
-    }
-    public void RefreshOpponent3TilesDisplay(bool showContent)
-    {
-        DisplayOpponent3MainTiles(showContent);
-        DisplayOpponent3FlowerTiles();
+        RefreshPlayer0TilesDisplays(isAfterDrawingTile);
+        RefreshOpponent1TilesDisplay(showOpponentContent);
+        RefreshOpponent2TilesDisplay(showOpponentContent);
+        RefreshOpponent3TilesDisplay(showOpponentContent);
     }
     public void DisplayTileActions(List<TileAction> tileActions)
     {
@@ -114,9 +103,25 @@ public class GameStateController : MonoBehaviour
             }
         }
     }
-    public void RemoveLastDiscardedTile()
+    public void DisplayRemoveLastDiscardedTile()
     {
         discardedTilesContainerController.RemoveLastDiscardedTile();
+    }
+    public void DisplayRemoveTileFromTileQueueFront()
+    {
+        tileQueueContainersController.RemoveTileFromFront();
+    }
+    public void DisplayRemoveTileFromTileQueueBack()
+    {
+        tileQueueContainersController.RemoveTileFromBack();
+    }
+    public void StartPreGameCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    {
+        StartCoroutine(PreGameCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
+    }
+    public void StartNextRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
+    {
+        StartCoroutine(NextRoundCoroutine(eastWindPlayerId, diceValueForWhereToStartDrawingTiles));
     }
     public void StartDiscardTimerCoroutine()
     {
@@ -136,6 +141,26 @@ public class GameStateController : MonoBehaviour
     {
         huActionContainerController.ClearTileActionsDisplay();
         tileActionsContainerController.ClearTileActionsDisplay();
+    }
+    private void RefreshPlayer0TilesDisplays(bool isAfterDrawingTile = false)
+    {
+        DisplayPlayer0MainTiles(isAfterDrawingTile);
+        DisplayPlayer0FlowerTiles();
+    }
+    private void RefreshOpponent1TilesDisplay(bool showContent)
+    {
+        DisplayOpponent1MainTiles(showContent);
+        DisplayOpponent1FlowerTiles();
+    }
+    private void RefreshOpponent2TilesDisplay(bool showContent)
+    {
+        DisplayOpponent2MainTiles(showContent);
+        DisplayOpponent2FlowerTiles();
+    }
+    private void RefreshOpponent3TilesDisplay(bool showContent)
+    {
+        DisplayOpponent3MainTiles(showContent);
+        DisplayOpponent3FlowerTiles();
     }
     private void DisplayPlayer0MainTiles(bool isAfterDrawingTile)
     {
@@ -167,7 +192,7 @@ public class GameStateController : MonoBehaviour
     }
     private void DisplayOpponent3FlowerTiles()
     {
-        opponent1FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent3FlowerTiles());
+        opponent3FlowerTilesContainerController.DisplaySmallTiles(turnProcessor.GetOpponent3FlowerTiles());
     }
     public void DisplayDiscardedTile(Tile discardedTile, int discardingPlayerId)
     {
@@ -180,6 +205,23 @@ public class GameStateController : MonoBehaviour
     private void StopOfferTimerCoroutine()
     {
         StopCoroutine(offerTimerCoroutine);
+    }
+    private IEnumerator PreGameCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    {
+        int eastWindPlayerId = diceValueForPlayerWinds % 4; // TODO: Display dice roll
+        tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
+        RefreshAllPlayersTilesDisplay();
+        yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
+        turnProcessor.StartGame();
+        RefreshAllPlayersTilesDisplay();
+    }
+    private IEnumerator NextRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
+    {
+        tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
+        RefreshAllPlayersTilesDisplay();
+        yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
+        turnProcessor.StartGame();
+        RefreshAllPlayersTilesDisplay();
     }
     private IEnumerator DiscardTimerCoroutine()
     {

@@ -1,6 +1,6 @@
 using Nito.Collections;
 
-public class TileQueue
+public class TileQueue : ITileQueue
 {
     private Deque<Tile> deque;
     public static TileQueue GetRandomizedTileQueue()
@@ -15,10 +15,12 @@ public class TileQueue
     }
     public Tile DrawFromFront()
     {
+        GameStateController.instance.DisplayRemoveTileFromTileQueueFront();
         return deque.RemoveFromFront();
     }
     public Tile DrawFromBack()
     {
+        GameStateController.instance.DisplayRemoveTileFromTileQueueBack();
         return deque.RemoveFromBack();
     }
     public void Randomize()

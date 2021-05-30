@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class TileAction
 {
     private TileActionTypes tileActionType;

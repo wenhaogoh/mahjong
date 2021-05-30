@@ -57,6 +57,10 @@ public class Tile : ScriptableObject, IComparable<Tile>
     }
     public override int GetHashCode()
     {
-        return ("" + tileType + value).GetHashCode();
+        return ToString().GetHashCode();
+    }
+    public override string ToString()
+    {
+        return tileType + " : " + value;
     }
 }

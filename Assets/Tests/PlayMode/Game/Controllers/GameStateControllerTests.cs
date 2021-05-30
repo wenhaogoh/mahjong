@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -10,6 +9,7 @@ public class GameStateControllerTests
     public IEnumerator Start()
     {
         GameStateController gameStateController = GetGameStateController();
+        yield return new WaitForSecondsRealtime(GameStateController.PRE_GAME_DELAY);
         yield return new WaitForSecondsRealtime(1);
         Assert.AreEqual(14, gameStateController.player0MainTilesContainerController.gameObject.transform.childCount);
         Assert.AreEqual(13, gameStateController.opponent1MainTilesContainerController.gameObject.transform.childCount);
@@ -37,6 +37,7 @@ public class GameStateControllerTests
         gameStateController.discardedTilesContainerController = GetDiscardedTilesContainerController();
         gameStateController.huActionContainerController = GetTileActionsContainerController();
         gameStateController.tileActionsContainerController = GetTileActionsContainerController();
+        gameStateController.tileQueueContainersController = GetTileQueueContainersController();
         return gameStateController;
     }
     private TilesContainerController GetTilesContainerController()
@@ -60,10 +61,29 @@ public class GameStateControllerTests
     }
     private TileActionsContainerController GetTileActionsContainerController()
     {
-        GameObject tilesActionGameObject = new GameObject();
-        tilesActionGameObject.AddComponent<TileActionsContainerController>();
-        TileActionsContainerController tileActionsContainerController = tilesActionGameObject.GetComponent<TileActionsContainerController>();
+        GameObject tilesActionsContainerGameObject = new GameObject();
+        tilesActionsContainerGameObject.AddComponent<TileActionsContainerController>();
+        TileActionsContainerController tileActionsContainerController = tilesActionsContainerGameObject.GetComponent<TileActionsContainerController>();
         tileActionsContainerController.tileActionPrefab = Resources.Load("Prefabs/TileAction") as GameObject;
         return tileActionsContainerController;
+    }
+    private TileQueueContainersController GetTileQueueContainersController()
+    {
+        GameObject tileQueueContainersGameObject = new GameObject();
+        tileQueueContainersGameObject.AddComponent<TileQueueContainersController>();
+        TileQueueContainersController tileQueueContainersController = tileQueueContainersGameObject.GetComponent<TileQueueContainersController>();
+        tileQueueContainersController.tileQueueContainerController0 = GetTileQueueContainerController();
+        tileQueueContainersController.tileQueueContainerController1 = GetTileQueueContainerController();
+        tileQueueContainersController.tileQueueContainerController2 = GetTileQueueContainerController();
+        tileQueueContainersController.tileQueueContainerController3 = GetTileQueueContainerController();
+        return tileQueueContainersController;
+    }
+    private TileQueueContainerController GetTileQueueContainerController()
+    {
+        GameObject tileQueueContainerGameObject = new GameObject();
+        tileQueueContainerGameObject.AddComponent<TileQueueContainerController>();
+        TileQueueContainerController tileQueueContainerController = tileQueueContainerGameObject.GetComponent<TileQueueContainerController>();
+        tileQueueContainerController.tileQueueTilePrefab = Resources.Load("Prefabs/TileQueueTile") as GameObject;
+        return tileQueueContainerController;
     }
 }
