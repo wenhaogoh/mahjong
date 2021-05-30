@@ -18,9 +18,9 @@ public class TileQueueContainersController : MonoBehaviour
     {
 
     }
-    public void Reset(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    public void Reset(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
     {
-        StartCoroutine(ResetCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
+        StartCoroutine(ResetCoroutine(eastWindPlayerId, diceValueForWhereToStartDrawingTiles));
     }
     public void RemoveTileFromFront()
     {
@@ -93,7 +93,7 @@ public class TileQueueContainersController : MonoBehaviour
             tileQueueTileGameObjects.AddToBack(tileQueueTileGameObjects.RemoveFromFront());
         }
     }
-    private IEnumerator ResetCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    private IEnumerator ResetCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
     {
         tileQueueContainerControllers = new TileQueueContainerController[]
         {
@@ -104,7 +104,6 @@ public class TileQueueContainersController : MonoBehaviour
         };
         tileQueueTileGameObjects = new Deque<GameObject>();
         AddGridLayoutGroupComponents();
-        int eastWindPlayerId = diceValueForPlayerWinds % 4;
         switch (eastWindPlayerId)
         {
             case PlayerUtils.PLAYER0_ID:
@@ -124,7 +123,7 @@ public class TileQueueContainersController : MonoBehaviour
             default:
                 break;
         }
-        yield return 0;
+        yield return 0; // Skip a frame for game objects to load
         RemoveGridLayoutGroupComponents();
         LoadGameObjects(eastWindPlayerId);
         RearrangeGameObjects(diceValueForWhereToStartDrawingTiles);

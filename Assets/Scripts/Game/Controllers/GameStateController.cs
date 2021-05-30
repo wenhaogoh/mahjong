@@ -119,6 +119,10 @@ public class GameStateController : MonoBehaviour
     {
         StartCoroutine(PreGameCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
     }
+    public void StartNextRoundCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    {
+        StartCoroutine(NextRoundCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
+    }
     public void StartDiscardTimerCoroutine()
     {
         discardTimerCoroutine = DiscardTimerCoroutine();
@@ -204,7 +208,17 @@ public class GameStateController : MonoBehaviour
     }
     private IEnumerator PreGameCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
     {
-        tileQueueContainersController.Reset(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles);
+        int eastWindPlayerId = diceValueForPlayerWinds % 4; // TODO: Display dice roll
+        tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
+        RefreshAllPlayersTilesDisplay();
+        yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
+        turnProcessor.StartGame();
+        RefreshAllPlayersTilesDisplay();
+    }
+    private IEnumerator NextRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
+    {
+        tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
+        RefreshAllPlayersTilesDisplay();
         yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
         turnProcessor.StartGame();
         RefreshAllPlayersTilesDisplay();

@@ -26,6 +26,10 @@ public class TileQueueContainerController : MonoBehaviour
     }
     public void SpawnTiles(int count)
     {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
         for (int i = 0; i < count; i++)
         {
             GameObject tileQueueTileGameObject = Instantiate(tileQueueTilePrefab);

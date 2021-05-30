@@ -92,11 +92,10 @@ public class TurnProcessor
         foreach (Player player in players)
         {
             player.Reset();
-            player.DrawStartingTiles(tileQueue);
         }
+        int diceValueForWhereToStartDrawingTiles = RollDice();
         SetPlayerWindsAfterHu(huPlayerId);
-        StartGame();
-        GameStateController.instance.RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.StartNextRoundCoroutine(huPlayerId, diceValueForWhereToStartDrawingTiles);
     }
     public void StartGame()
     {
