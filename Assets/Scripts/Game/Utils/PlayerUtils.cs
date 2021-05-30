@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 public class PlayerUtils
 {
     public const int PLAYER0_ID = 0;
@@ -23,5 +26,15 @@ public class PlayerUtils
     public static Player GetPlayer(int id)
     {
         return new Player(id);
+    }
+    public static void PrintPlayerTiles(Player player)
+    {
+        List<Tile> flowerTiles = player.GetFlowerTiles().GetTiles();
+        List<Tile> mainTiles = player.GetMainTiles().GetTiles();
+        string flowerTilesMessage = string.Join(",", flowerTiles);
+        string mainTilesMessage = string.Join(",", mainTiles);
+        Debug.Log("Player ID: " + player.GetId() + "\n"
+                    + "Flower Tiles: [" + flowerTilesMessage + "]\n"
+                    + "Main Tiles: [" + mainTilesMessage + "]");
     }
 }

@@ -14,7 +14,7 @@ public class Player
         this.mainTiles = new TilesContainer();
         this.flowerTiles = new TilesContainer();
     }
-    public void DrawTile(TileQueue tileQueue)
+    public void DrawTile(ITileQueue tileQueue)
     {
         Tile tile = tileQueue.DrawFromFront();
         while (tile.IsFlower())
@@ -24,7 +24,7 @@ public class Player
         }
         mainTiles.AddTile(tile);
     }
-    public void DrawStartingTiles(TileQueue tileQueue)
+    public void DrawStartingTiles(ITileQueue tileQueue)
     {
         DrawTiles(STARTING_TILES_COUNT, tileQueue);
         SortTiles();
@@ -102,7 +102,7 @@ public class Player
         this.mainTiles = new TilesContainer();
         this.flowerTiles = new TilesContainer();
     }
-    private void DrawTiles(int count, TileQueue tileQueue)
+    private void DrawTiles(int count, ITileQueue tileQueue)
     {
         for (int i = 0; i < count; i++)
         {

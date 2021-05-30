@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class TurnProcessor
 {
-    private TileQueue tileQueue;
+    private ITileQueue tileQueue;
     private TilesContainer discardedTilesContainer;
     private RequestQueue requestQueue;
     private Player player0; // Bottom
@@ -22,13 +22,10 @@ public class TurnProcessor
         this.opponent2 = PlayerUtils.GetOpponent2();
         this.opponent3 = PlayerUtils.GetOpponent3();
         this.players = new Player[] { player0, opponent1, opponent2, opponent3 };
-        player0.DrawStartingTiles(tileQueue);
-        opponent1.DrawStartingTiles(tileQueue);
-        opponent2.DrawStartingTiles(tileQueue);
-        opponent3.DrawStartingTiles(tileQueue);
-        SetPlayerWinds(player0, Winds.EAST);
-        StartGame();
-        RefreshAllPlayersTilesDisplay();
+        int diceValueForPlayerWinds = RollDice();
+        SetPlayerWindsBeforeGameStart(diceValueForPlayerWinds);
+        int diceValueForWhereToStartDrawingTiles = RollDice();
+        GameStateController.instance.StartPreGameCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles);
     }
     public void DrawPlayer0Tile()
     {
@@ -99,7 +96,21 @@ public class TurnProcessor
         }
         SetPlayerWindsAfterHu(huPlayerId);
         StartGame();
-        RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.RefreshAllPlayersTilesDisplay();
+    }
+    public void StartGame()
+    {
+        player0.DrawStartingTiles(tileQueue);
+        opponent1.DrawStartingTiles(tileQueue);
+        opponent2.DrawStartingTiles(tileQueue);
+        opponent3.DrawStartingTiles(tileQueue);
+        Player eastWindPlayer = GetEastWindPlayer();
+        GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDrawingGameState(eastWindPlayer.GetId());
+    }
+    private int RollDice()
+    {
+        Random random = new Random();
+        return random.Next(18);
     }
     private void SetPlayerWinds(Player player, Winds wind)
     {
@@ -110,10 +121,10 @@ public class TurnProcessor
             wind = wind.Next<Winds>();
         }
     }
-    private void StartGame()
+    private void SetPlayerWindsBeforeGameStart(int diceValue)
     {
-        Player eastWindPlayer = GetEastWindPlayer();
-        GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDrawingGameState(eastWindPlayer.GetId());
+        Player eastWindPlayer = players[diceValue % 4];
+        SetPlayerWinds(eastWindPlayer, Winds.EAST);
     }
     private void SetPlayerWindsAfterHu(int huPlayerId)
     {
@@ -144,7 +155,7 @@ public class TurnProcessor
             GameStateController.instance.DisplayTileActions(drawingPlayer.GetPossibleTileActionsFromDrawnTile());
             GameStateController.instance.StartDiscardTimerCoroutine();
         }
-        RefreshAllPlayersTilesDisplay(false, isPlayer0Drawing);
+        GameStateController.instance.RefreshAllPlayersTilesDisplay(false, isPlayer0Drawing);
         GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDiscardingGameState(drawingPlayer.GetId());
     }
     private void DiscardTile(int tileIndex, Player discardingPlayer)
@@ -152,7 +163,7 @@ public class TurnProcessor
         GameStateController.instance.gameState = GameStates.PROCESSING;
         discardingPlayer.DiscardTile(tileIndex, discardedTilesContainer);
         discardingPlayer.SortTiles();
-        RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.RefreshAllPlayersTilesDisplay();
         GameStateController.instance.DisplayDiscardedTile(discardedTilesContainer.GetLastTile(), discardingPlayer.GetId());
         Tile discardedTile = discardedTilesContainer.GetLastTile();
         Offer(discardedTile, discardingPlayer);
@@ -164,7 +175,7 @@ public class TurnProcessor
     private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, bool isFromOffer = false)
     {
         executingPlayer.ExecuteTileAction(tileAction, isFromOffer);
-        RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.RefreshAllPlayersTilesDisplay();
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.KONG:
@@ -180,7 +191,7 @@ public class TurnProcessor
                 break;
             case TileActionTypes.HU:
                 GameStateController.instance.gameState = GameStates.PROCESSING;
-                RefreshAllPlayersTilesDisplay(true);
+                GameStateController.instance.RefreshAllPlayersTilesDisplay(true);
                 GameStateController.instance.StartHuTimerCoroutine(executingPlayer.GetId());
                 break;
             default:
@@ -203,7 +214,7 @@ public class TurnProcessor
             else
             {
                 discardedTilesContainer.RemoveLastTile();
-                GameStateController.instance.RemoveLastDiscardedTile();
+                GameStateController.instance.DisplayRemoveLastDiscardedTile();
                 ExecuteRequest(request);
             }
         }
@@ -252,12 +263,5 @@ public class TurnProcessor
             nextPlayerIndex = 0;
         }
         return players[nextPlayerIndex];
-    }
-    private void RefreshAllPlayersTilesDisplay(bool showOpponentContent = false, bool isAfterDrawingTile = false)
-    {
-        GameStateController.instance.RefreshPlayer0TilesDisplays(isAfterDrawingTile);
-        GameStateController.instance.RefreshOpponent1TilesDisplay(showOpponentContent);
-        GameStateController.instance.RefreshOpponent2TilesDisplay(showOpponentContent);
-        GameStateController.instance.RefreshOpponent3TilesDisplay(showOpponentContent);
     }
 }
