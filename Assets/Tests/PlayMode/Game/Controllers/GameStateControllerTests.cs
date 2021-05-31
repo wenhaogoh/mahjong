@@ -6,20 +6,15 @@ using UnityEngine.TestTools;
 public class GameStateControllerTests
 {
     [UnityTest]
-    public IEnumerator Start()
+    public IEnumerator SimulatePreGame()
     {
         GameStateController gameStateController = GetGameStateController();
         yield return new WaitForSecondsRealtime(GameStateController.PRE_GAME_DELAY);
         yield return new WaitForSecondsRealtime(1);
-        Assert.AreEqual(14, gameStateController.player0MainTilesContainerController.gameObject.transform.childCount);
-        Assert.AreEqual(13, gameStateController.opponent1MainTilesContainerController.gameObject.transform.childCount);
-        Assert.AreEqual(13, gameStateController.opponent2MainTilesContainerController.gameObject.transform.childCount);
-        Assert.AreEqual(13, gameStateController.opponent3MainTilesContainerController.gameObject.transform.childCount);
-        yield return new WaitForSecondsRealtime(GameStateController.DISCARD_TIMER_DURATION);
-        Assert.AreEqual(13, gameStateController.player0MainTilesContainerController.gameObject.transform.childCount);
-        Assert.AreEqual(14, gameStateController.opponent1MainTilesContainerController.gameObject.transform.childCount);
-        Assert.AreEqual(13, gameStateController.opponent2MainTilesContainerController.gameObject.transform.childCount);
-        Assert.AreEqual(13, gameStateController.opponent3MainTilesContainerController.gameObject.transform.childCount);
+        Assert.AreEqual(53, gameStateController.player0MainTilesContainerController.gameObject.transform.childCount
+                            + gameStateController.opponent1MainTilesContainerController.gameObject.transform.childCount
+                            + gameStateController.opponent2MainTilesContainerController.gameObject.transform.childCount
+                            + gameStateController.opponent3MainTilesContainerController.gameObject.transform.childCount);
     }
     private GameStateController GetGameStateController()
     {

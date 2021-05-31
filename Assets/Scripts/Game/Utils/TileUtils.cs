@@ -27,10 +27,7 @@ public class TileUtils
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            Tile bambooTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            bambooTile.SetTileType(tileType);
-                            bambooTile.SetValue(i);
-                            tiles.Add(bambooTile);
+                            tiles.Add(GetTile(tileType, i));
                         }
                     }
                     break;
@@ -39,10 +36,7 @@ public class TileUtils
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            Tile characterTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            characterTile.SetTileType(tileType);
-                            characterTile.SetValue(i);
-                            tiles.Add(characterTile);
+                            tiles.Add(GetTile(tileType, i));
                         }
                     }
                     break;
@@ -51,20 +45,14 @@ public class TileUtils
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            Tile dotTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            dotTile.SetTileType(tileType);
-                            dotTile.SetValue(i);
-                            tiles.Add(dotTile);
+                            tiles.Add(GetTile(tileType, i));
                         }
                     }
                     break;
                 case TileTypes.FLOWER:
                     for (int i = 1; i <= 12; i++) // Cat + Mouse + Rooster + Centipede + 2 * 4 Flowers
                     {
-                        Tile flowerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                        flowerTile.SetTileType(tileType);
-                        flowerTile.SetValue(i);
-                        tiles.Add(flowerTile);
+                        tiles.Add(GetTile(tileType, i));
                     }
                     break;
                 case TileTypes.HONOUR:
@@ -72,10 +60,7 @@ public class TileUtils
                     {
                         for (int i = 0; i < 4; i++)
                         {
-                            Tile honourTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-                            honourTile.SetTileType(tileType);
-                            honourTile.SetValue((int)honourType);
-                            tiles.Add(honourTile);
+                            tiles.Add(GetTile(tileType, (int)honourType));
                         }
                     }
                     break;
@@ -92,10 +77,7 @@ public class TileUtils
         List<Tile> tiles = new List<Tile>();
         for (int i = 0; i < 148; i++)
         {
-            Tile bambooTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            bambooTile.SetTileType(TileTypes.BAMBOO);
-            bambooTile.SetValue(1);
-            tiles.Add(bambooTile);
+            tiles.Add(GetRedDragonTile());
         }
         return tiles;
     }
@@ -104,10 +86,7 @@ public class TileUtils
         List<Tile> tiles = new List<Tile>();
         for (int i = 0; i < 148; i++)
         {
-            Tile bambooTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            bambooTile.SetTileType(TileTypes.BAMBOO);
-            bambooTile.SetValue(Mathf.FloorToInt(i * 9 / 148) + 1);
-            tiles.Add(bambooTile);
+            tiles.Add(TileUtils.GetTile(TileTypes.BAMBOO, Mathf.FloorToInt(i * 3 / 148) + 1));
         }
         return tiles;
     }

@@ -37,7 +37,7 @@ public class PlayerTests
         Assert.AreEqual(1, tilesContainer.Count());
     }
     [Test]
-    public void GetPossibleActionsFromDrawnTile_NoActions()
+    public void GetPossibleActionsFromDrawnTile_NoAction()
     {
         Player player = PlayerUtils.GetPlayer0();
         ITileQueue tileQueue = GetTileQueue();
@@ -45,7 +45,27 @@ public class PlayerTests
         Assert.AreEqual(0, player.GetPossibleTileActionsFromDrawnTile().Count);
     }
     [Test]
-    public void ExecuteTileAction_Kong()
+    public void GetPossibleActionsFromOfferedTile_ChowAction_Player0()
+    {
+        Player player = PlayerUtils.GetPlayer0();
+        Player previousPlayer = PlayerUtils.GetOpponent3();
+        ITileQueue tileQueue = GetTileQueue();
+        player.GetMainTiles().AddTile(TileUtils.GetTile(TileTypes.BAMBOO, 1));
+        player.GetMainTiles().AddTile(TileUtils.GetTile(TileTypes.BAMBOO, 3));
+        Assert.AreEqual(1, player.GetPossibleTileActionsFromOfferedTile(TileUtils.GetTile(TileTypes.BAMBOO, 2), previousPlayer).Count);
+    }
+    [Test]
+    public void GetPossibleActionsFromOfferedTile_NoAction_NotPlayer0()
+    {
+        Player player = PlayerUtils.GetOpponent1();
+        Player notPreviousPlayer = PlayerUtils.GetOpponent2();
+        ITileQueue tileQueue = GetTileQueue();
+        player.GetMainTiles().AddTile(TileUtils.GetTile(TileTypes.BAMBOO, 1));
+        player.GetMainTiles().AddTile(TileUtils.GetTile(TileTypes.BAMBOO, 3));
+        Assert.AreEqual(0, player.GetPossibleTileActionsFromOfferedTile(TileUtils.GetTile(TileTypes.BAMBOO, 2), notPreviousPlayer).Count);
+    }
+    [Test]
+    public void ExecuteTileAction_Kong_Drawn()
     {
         Player player = PlayerUtils.GetPlayer0();
         ITileQueue tileQueue = GetTileQueue();
@@ -60,6 +80,23 @@ public class PlayerTests
         player.ExecuteTileAction(tileAction, false);
         Assert.AreEqual(4, player.GetFlowerTiles().Count());
         Assert.AreEqual(0, player.GetMainTiles().Count());
+    }
+    [Test]
+    public void ExecuteTileAction_Kong_Offered()
+    {
+        Player player = PlayerUtils.GetPlayer0();
+        ITileQueue tileQueue = GetTileQueue();
+        for (int i = 0; i < 4; i++)
+        {
+            player.DrawTile(tileQueue);
+        }
+        TilesContainer tilesContainer = new TilesContainer();
+        tilesContainer.AddTiles(player.GetMainTiles());
+        Tile triggerTile = tilesContainer.GetLastTile();
+        TileAction tileAction = new TileAction(TileActionTypes.KONG, tilesContainer, triggerTile);
+        player.ExecuteTileAction(tileAction, true);
+        Assert.AreEqual(4, player.GetFlowerTiles().Count());
+        Assert.AreEqual(1, player.GetMainTiles().Count());
     }
     [Test]
     public void ExecuteTileAction_Chow()
@@ -79,7 +116,7 @@ public class PlayerTests
         Assert.AreEqual(1, player.GetMainTiles().Count());
     }
     [Test]
-    public void ExecuteTileAction_Pong()
+    public void ExecuteTileAction_Pong_Offered()
     {
         Player player = PlayerUtils.GetPlayer0();
         for (int i = 0; i < 3; i++)
@@ -90,9 +127,24 @@ public class PlayerTests
         tilesContainer.AddTiles(player.GetMainTiles());
         Tile triggerTile = tilesContainer.GetLastTile();
         TileAction tileAction = new TileAction(TileActionTypes.PONG, tilesContainer, triggerTile);
-        player.ExecuteTileAction(tileAction, triggerTile);
+        player.ExecuteTileAction(tileAction, true);
         Assert.AreEqual(3, player.GetFlowerTiles().Count());
         Assert.AreEqual(1, player.GetMainTiles().Count());
+    }
+    [Test]
+    public void ExecuteTileAction_Hu_Offered()
+    {
+        Player player = PlayerUtils.GetPlayer0();
+        for (int i = 0; i < 1; i++)
+        {
+            player.GetMainTiles().AddTile(TileUtils.GetRedDragonTile());
+        }
+        TilesContainer tilesContainer = new TilesContainer();
+        tilesContainer.AddTile(TileUtils.GetRedDragonTile());
+        TileAction tileAction = new TileAction(TileActionTypes.HU, tilesContainer, TileUtils.GetRedDragonTile());
+        player.ExecuteTileAction(tileAction, true);
+        Assert.AreEqual(0, player.GetFlowerTiles().Count());
+        Assert.AreEqual(2, player.GetMainTiles().Count());
     }
     [Test]
     public void SetWind()
@@ -100,6 +152,16 @@ public class PlayerTests
         Player player = PlayerUtils.GetPlayer0();
         player.SetWind(Winds.EAST);
         Assert.AreEqual(Winds.EAST, player.GetWind());
+    }
+    [Test]
+    public void Reset()
+    {
+        Player player = PlayerUtils.GetPlayer0();
+        player.GetMainTiles().AddTile(TileUtils.GetRedDragonTile());
+        player.GetFlowerTiles().AddTile(TileUtils.GetRedDragonTile());
+        player.Reset();
+        Assert.AreEqual(0, player.GetMainTiles().Count());
+        Assert.AreEqual(0, player.GetFlowerTiles().Count());
     }
     private ITileQueue GetTileQueue()
     {

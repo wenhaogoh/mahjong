@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PlayerUtils
 {
@@ -27,14 +26,14 @@ public class PlayerUtils
     {
         return new Player(id);
     }
-    public static void PrintPlayerTiles(Player player)
+    public static string GetPlayerTilesMessage(Player player)
     {
         List<Tile> flowerTiles = player.GetFlowerTiles().GetTiles();
         List<Tile> mainTiles = player.GetMainTiles().GetTiles();
         string flowerTilesMessage = string.Join(",", flowerTiles);
         string mainTilesMessage = string.Join(",", mainTiles);
-        Debug.Log("Player ID: " + player.GetId() + "\n"
+        return "Player ID: " + player.GetId() + "\n"
                     + "Flower Tiles: [" + flowerTilesMessage + "]\n"
-                    + "Main Tiles: [" + mainTilesMessage + "]");
+                    + "Main Tiles: [" + mainTilesMessage + "]";
     }
 }

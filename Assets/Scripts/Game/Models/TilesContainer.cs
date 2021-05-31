@@ -31,10 +31,7 @@ public class TilesContainer
     {
         foreach (Tile tile in tiles.GetTiles())
         {
-            if (this.tiles.Contains(tile))
-            {
-                this.tiles.Remove(tile);
-            }
+            this.tiles.Remove(tile);
         }
     }
     public void Sort()
@@ -104,21 +101,17 @@ public class TilesContainer
         {
             return null;
         }
-
         List<TileAction> chowActions = new List<TileAction>();
         TileTypes triggerTileType = triggerTile.GetTileType();
 
-        // Find CHOW partners of newTile N
-        Tile[] partners = new Tile[5]; // N-2, N-1, N (ignore), N+1, N+2
+        Tile[] partners = new Tile[5]; // Find CHOW partners of newTile N: N-2, N-1, N (ignored), N+1, N+2 
         for (int i = 0; i < 5; i++)
         {
             partners[i] = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
             partners[i].SetTileType(triggerTileType);
             partners[i].SetValue(triggerTile.GetValue() + i - 2);
         }
-
-        // CHOW Sequence: X X N
-        if (tiles.Contains(partners[0]) && tiles.Contains(partners[1]))
+        if (tiles.Contains(partners[0]) && tiles.Contains(partners[1])) // CHOW Sequence: X X N
         {
             TilesContainer actionTiles = new TilesContainer();
             actionTiles.AddTile(partners[0]);
@@ -126,9 +119,7 @@ public class TilesContainer
             actionTiles.AddTile(triggerTile);
             chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
         }
-
-        // CHOW Sequence: X N X
-        if (tiles.Contains(partners[1]) && tiles.Contains(partners[3]))
+        if (tiles.Contains(partners[1]) && tiles.Contains(partners[3])) // CHOW Sequence: X N X
         {
             TilesContainer actionTiles = new TilesContainer();
             actionTiles.AddTile(partners[1]);
@@ -136,9 +127,7 @@ public class TilesContainer
             actionTiles.AddTile(partners[3]);
             chowActions.Add(new TileAction(TileActionTypes.CHOW, actionTiles, triggerTile));
         }
-
-        // CHOW Sequence: N X X
-        if (tiles.Contains(partners[3]) && tiles.Contains(partners[4]))
+        if (tiles.Contains(partners[3]) && tiles.Contains(partners[4])) // CHOW Sequence: N X X
         {
             TilesContainer actionTiles = new TilesContainer();
             actionTiles.AddTile(triggerTile);
@@ -265,58 +254,6 @@ public class TilesContainer
     }
     private bool CanHu(List<Tile> tiles)
     {
-        tiles.Sort();
-        return CanHuHelper(tiles, false);
-    }
-    private bool CanHuHelper(List<Tile> tiles, bool hasEye)
-    {
-        if (tiles.Count == 0)
-        {
-            return hasEye;
-        }
-        if (tiles.Count == 1)
-        {
-            return false; // Should never enter this condition block
-        }
-        if (tiles.Count == 2)
-        {
-            if (hasEye)
-            {
-                return false;
-            }
-            return tiles[0].Equals(tiles[1]);
-        }
-        bool canHuByRemovingEye = false;
-        bool canHuByRemovingTriplet = false;
-        bool canHuByRemovingConsecutiveTrio = false;
-        Tile firstTile = tiles[0];
-        if (!hasEye)
-        {
-            if (firstTile.Equals(tiles[1]))
-            {
-                List<Tile> tilesCopy = new List<Tile>(tiles);
-                tilesCopy.RemoveRange(0, 2);
-                canHuByRemovingEye = CanHuHelper(tilesCopy, true);
-            }
-        }
-        if (tiles.Count(tile => firstTile.Equals(tile)) >= 3)
-        {
-            List<Tile> tilesCopy = new List<Tile>(tiles);
-            tilesCopy.RemoveRange(0, 3);
-            canHuByRemovingTriplet = CanHuHelper(tilesCopy, hasEye);
-        }
-        int index1 = tiles.FindIndex(tile => firstTile.GetTileType() == tile.GetTileType()
-                                                && firstTile.GetValue() + 1 == tile.GetValue());
-        int index2 = tiles.FindIndex(tile => firstTile.GetTileType() == tile.GetTileType()
-                                                && firstTile.GetValue() + 2 == tile.GetValue());
-        if (index1 != -1 && index2 != -1)
-        {
-            List<Tile> tilesCopy = new List<Tile>(tiles);
-            tilesCopy.RemoveAt(0);
-            tilesCopy.RemoveAt(index1);
-            tilesCopy.RemoveAt(index2); // TODO: Fix index out of range error here
-            canHuByRemovingConsecutiveTrio = CanHuHelper(tilesCopy, hasEye);
-        }
-        return canHuByRemovingEye || canHuByRemovingTriplet || canHuByRemovingConsecutiveTrio;
+        return false; // TODO: Implement hu detection algorithm
     }
 }
