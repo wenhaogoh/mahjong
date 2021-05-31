@@ -22,10 +22,8 @@ public class TurnProcessor
         this.opponent2 = PlayerUtils.GetOpponent2();
         this.opponent3 = PlayerUtils.GetOpponent3();
         this.players = new Player[] { player0, opponent1, opponent2, opponent3 };
-        int diceValueForPlayerWinds = RollDice();
-        SetPlayerWindsBeforeGameStart(diceValueForPlayerWinds);
-        int diceValueForWhereToStartDrawingTiles = RollDice();
-        GameStateController.instance.StartPreGameCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles);
+        GameStateController.instance.DisplayRollDiceToSetPlayerWinds(RollDice(), RollDice(), RollDice());
+        GameStateController.instance.DisplayRollDiceToDrawStartingTiles(RollDice(), RollDice(), RollDice());
     }
     public void DrawPlayer0Tile()
     {
@@ -94,11 +92,20 @@ public class TurnProcessor
             player.Reset();
         }
         SetPlayerWindsAfterHu(huPlayerId);
-        int diceValueForWhereToStartDrawingTiles = RollDice();
-        int eastWindPlayerId = GetNextPlayer(huPlayerId).GetId();
-        GameStateController.instance.StartNextRoundCoroutine(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
+        GameStateController.instance.DisplayRollDiceToDrawStartingTiles(RollDice(), RollDice(), RollDice());
     }
-    public void StartGame()
+    public int GetEastWindPlayerId()
+    {
+        foreach (Player player in players)
+        {
+            if (player.IsEastWindPlayer())
+            {
+                return player.GetId();
+            }
+        }
+        throw new Exception("Unable to find east wind player!");
+    }
+    public void StartRound()
     {
         player0.DrawStartingTiles(tileQueue);
         opponent1.DrawStartingTiles(tileQueue);
@@ -107,10 +114,15 @@ public class TurnProcessor
         Player eastWindPlayer = GetEastWindPlayer();
         GameStateController.instance.gameState = MapperUtils.MapPlayerIdToDrawingGameState(eastWindPlayer.GetId());
     }
+    public void SetPlayerWindsBeforeGameStart(int totalDiceValue)
+    {
+        Player eastWindPlayer = players[totalDiceValue % 4];
+        SetPlayerWinds(eastWindPlayer, Winds.EAST);
+    }
     private int RollDice()
     {
         Random random = new Random();
-        return random.Next(18);
+        return random.Next(1, 6);
     }
     private void SetPlayerWinds(Player player, Winds wind)
     {
@@ -120,11 +132,6 @@ public class TurnProcessor
             player = GetNextPlayer(player);
             wind = wind.Next<Winds>();
         }
-    }
-    private void SetPlayerWindsBeforeGameStart(int diceValue)
-    {
-        Player eastWindPlayer = players[diceValue % 4];
-        SetPlayerWinds(eastWindPlayer, Winds.EAST);
     }
     private void SetPlayerWindsAfterHu(int huPlayerId)
     {

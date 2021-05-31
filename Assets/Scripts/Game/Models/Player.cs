@@ -102,6 +102,10 @@ public class Player
         this.mainTiles = new TilesContainer();
         this.flowerTiles = new TilesContainer();
     }
+    public bool IsEastWindPlayer()
+    {
+        return wind == Winds.EAST;
+    }
     private void DrawTiles(int count, ITileQueue tileQueue)
     {
         for (int i = 0; i < count; i++)

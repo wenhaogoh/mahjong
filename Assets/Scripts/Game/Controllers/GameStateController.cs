@@ -115,13 +115,15 @@ public class GameStateController : MonoBehaviour
     {
         tileQueueContainersController.RemoveTileFromBack();
     }
-    public void StartPreGameCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
+    public void DisplayRollDiceToSetPlayerWinds(int diceValue1, int diceValue2, int diceValue3)
     {
-        StartCoroutine(PreGameCoroutine(diceValueForPlayerWinds, diceValueForWhereToStartDrawingTiles));
+        int totalDiceValue = diceValue1 + diceValue2 + diceValue3; // TODO: Display dice roll
+        turnProcessor.SetPlayerWindsBeforeGameStart(totalDiceValue);
     }
-    public void StartNextRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
+    public void DisplayRollDiceToDrawStartingTiles(int diceValue1, int diceValue2, int diceValue3)
     {
-        StartCoroutine(NextRoundCoroutine(eastWindPlayerId, diceValueForWhereToStartDrawingTiles));
+        int totalDiceValue = diceValue1 + diceValue2 + diceValue3; // TODO: Display dice roll
+        StartCoroutine(StartRoundCoroutine(turnProcessor.GetEastWindPlayerId(), totalDiceValue));
     }
     public void StartDiscardTimerCoroutine()
     {
@@ -206,21 +208,12 @@ public class GameStateController : MonoBehaviour
     {
         StopCoroutine(offerTimerCoroutine);
     }
-    private IEnumerator PreGameCoroutine(int diceValueForPlayerWinds, int diceValueForWhereToStartDrawingTiles)
-    {
-        int eastWindPlayerId = diceValueForPlayerWinds % 4; // TODO: Display dice roll
-        tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
-        RefreshAllPlayersTilesDisplay();
-        yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
-        turnProcessor.StartGame();
-        RefreshAllPlayersTilesDisplay();
-    }
-    private IEnumerator NextRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
+    private IEnumerator StartRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
     {
         tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
         RefreshAllPlayersTilesDisplay();
         yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
-        turnProcessor.StartGame();
+        turnProcessor.StartRound();
         RefreshAllPlayersTilesDisplay();
     }
     private IEnumerator DiscardTimerCoroutine()
