@@ -37,9 +37,13 @@ public class Player
     public List<TileAction> GetPossibleTileActionsFromDrawnTile()
     {
         Tile drawnTile = mainTiles.RemoveLastTile();
-        List<TileAction> tileActions = mainTiles.GetPossibleTileActionsFromDrawnTile(drawnTile);
+        List<TileAction> tileActions = TilesAnalyzer.GetPossibleTileActionsFromDrawnTile(mainTiles.GetTiles(), drawnTile);
         mainTiles.AddTile(drawnTile);
         return tileActions;
+    }
+    public List<TileAction> GetPossibleTileActionsFromOfferedTile(Tile offeredTile, Player offeringPlayer)
+    {
+        return TilesAnalyzer.GetPossibleTileActionsFromOfferedTile(mainTiles.GetTiles(), offeredTile, IsPreviousPlayer(offeringPlayer));
     }
     public void ExecuteTileAction(TileAction tileAction, bool isFromOffer)
     {
@@ -67,10 +71,6 @@ public class Player
             default:
                 break;
         }
-    }
-    public List<TileAction> GetPossibleTileActionsFromOfferedTile(Tile offeredTile, Player offeringPlayer)
-    {
-        return mainTiles.GetPossibleTileActionsFromOfferedTile(offeredTile, IsPreviousPlayer(offeringPlayer));
     }
     public void SortTiles()
     {

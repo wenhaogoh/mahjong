@@ -7,6 +7,10 @@ public class TileUtils
     {
         return GetTile(TileTypes.HONOUR, (int)HonourTypes.RED_DRAGON);
     }
+    public static Tile GetGreenDragonTile()
+    {
+        return GetTile(TileTypes.HONOUR, (int)HonourTypes.GREEN_DRAGON);
+    }
     public static Tile GetTile(TileTypes tileType, int value)
     {
         Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
