@@ -46,8 +46,7 @@ public class DiscardedTilesContainerController : MonoBehaviour
     private void SpawnTile(Tile discardedTile, Vector3 spawnPoint, Vector2 velocity, float angularVelocity, Quaternion quaternion)
     {
         GameObject discardedTileObject = Instantiate(discardedTilePrefab, spawnPoint, quaternion);
-        discardedTileObject.GetComponent<TileController>().tile = discardedTile;
-        discardedTileObject.GetComponent<TileController>().showTileContent = true;
+        discardedTileObject.GetComponent<TileController>().SetTileContent(0, discardedTile, true);
         discardedTileObject.GetComponent<Rigidbody2D>().velocity = velocity;
         discardedTileObject.GetComponent<Rigidbody2D>().angularVelocity = angularVelocity;
         discardedTileObject.transform.SetParent(this.transform, false);

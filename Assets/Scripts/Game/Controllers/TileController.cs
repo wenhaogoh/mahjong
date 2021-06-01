@@ -3,22 +3,32 @@ using TMPro;
 
 public class TileController : MonoBehaviour
 {
-    public Tile tile;
     public TextMeshProUGUI type;
     public TextMeshProUGUI value;
+    public Tile tile;
     public int index;
-    public bool showTileContent;
     void Start()
     {
+
+    }
+    void Update()
+    {
+
+    }
+    public void SetTileContent(int index, Tile tile, bool showTileContent)
+    {
+        this.index = index;
+        this.tile = tile;
         if (showTileContent)
         {
             type.SetText(tile.GetTileType().ToString());
             value.SetText(tile.GetValue().ToString());
         }
-    }
-    void Update()
-    {
-
+        else
+        {
+            type.SetText("");
+            value.SetText("");
+        }
     }
     public void OnClick()
     {
