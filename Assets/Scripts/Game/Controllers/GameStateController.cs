@@ -81,7 +81,7 @@ public class GameStateController : MonoBehaviour
         StopOfferTimerCoroutine();
         turnProcessor.ProcessPlayer0TileActionRequest(tileAction);
     }
-    public void RefreshAllPlayersTilesDisplay(bool showOpponentContent = false, bool isAfterDrawingTile = false)
+    public void RefreshAllPlayersTilesDisplay(bool showOpponentContent, bool isAfterDrawingTile)
     {
         RefreshPlayer0TilesDisplays(isAfterDrawingTile);
         RefreshOpponent1TilesDisplay(showOpponentContent);
@@ -211,10 +211,10 @@ public class GameStateController : MonoBehaviour
     private IEnumerator StartRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
     {
         tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
-        RefreshAllPlayersTilesDisplay();
+        RefreshAllPlayersTilesDisplay(false, false);
         yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
         turnProcessor.StartRound();
-        RefreshAllPlayersTilesDisplay();
+        RefreshAllPlayersTilesDisplay(false, false);
     }
     private IEnumerator DiscardTimerCoroutine()
     {

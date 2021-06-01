@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TilesContainerTests
@@ -98,61 +99,107 @@ public class TilesContainerTests
     public void GetPossibleActionsFromDrawnTile_NoActions()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile drawnTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        drawnTile.SetTileType(TileTypes.BAMBOO);
-        drawnTile.SetValue(1);
+        Tile drawnTile = TileUtils.GetTile(TileTypes.BAMBOO, 1);
         Assert.AreEqual(0, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile).Count);
     }
     [Test]
     public void GetPossibleActionsFromDrawnTile_Kong()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile drawnTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        drawnTile.SetTileType(TileTypes.BAMBOO);
-        drawnTile.SetValue(1);
+        Tile drawnTile = TileUtils.GetTile(TileTypes.BAMBOO, 1);
         for (int i = 0; i < 3; i++)
         {
-            Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            tile.SetTileType(TileTypes.BAMBOO);
-            tile.SetValue(1);
+            Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, 1);
             tilesContainer.AddTile(tile);
         }
         Assert.AreEqual(1, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile).Count);
         Assert.AreEqual(TileActionTypes.KONG, tilesContainer.GetPossibleTileActionsFromDrawnTile(drawnTile)[0].GetTileActionType());
     }
-
     [Test]
     public void GetPossibleActionsFromOfferedTile_Chow_HonourTile()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile offeredTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        offeredTile.SetTileType(TileTypes.HONOUR);
-        offeredTile.SetValue((int)HonourTypes.EAST);
+        Tile offeredTile = TileUtils.GetTile(TileTypes.HONOUR, (int)HonourTypes.EAST);
         for (int i = 1; i < 9; i++)
         {
-            Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            tile.SetTileType(TileTypes.BAMBOO);
-            tile.SetValue(i);
+            Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, i);
             tilesContainer.AddTile(tile);
         }
         Assert.AreEqual(0, tilesContainer.GetPossibleTileActionsFromOfferedTile(offeredTile, true).Count);
     }
-
     [Test]
     public void GetPossibleActionsFromOfferedTile_Chow_NonhonourTile()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile offeredTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        offeredTile.SetTileType(TileTypes.BAMBOO);
-        offeredTile.SetValue(3);
+        Tile offeredTile = TileUtils.GetTile(TileTypes.BAMBOO, 3);
         for (int i = 1; i < 9; i++)
         {
-            Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            tile.SetTileType(TileTypes.BAMBOO);
-            tile.SetValue(i);
+            Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, i);
             tilesContainer.AddTile(tile);
         }
         Assert.AreEqual(3, tilesContainer.GetPossibleTileActionsFromOfferedTile(offeredTile, true).Count);
         Assert.AreEqual(TileActionTypes.CHOW, tilesContainer.GetPossibleTileActionsFromOfferedTile(offeredTile, true)[0].GetTileActionType());
+    }
+    [Test]
+    public void GetPossibleActionsFromOfferedTile_Hu_OnHonourPong()
+    {
+        TilesContainer tilesContainer = new TilesContainer();
+        Tile greenDragonTile = TileUtils.GetTile(TileTypes.HONOUR, (int)HonourTypes.GREEN_DRAGON);
+        Tile redDragonTile = TileUtils.GetRedDragonTile();
+        for (int i = 1; i <= 9; i++)
+        {
+            Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, i);
+            tilesContainer.AddTile(tile);
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            tilesContainer.AddTile(greenDragonTile);
+            tilesContainer.AddTile(redDragonTile);
+        }
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromOfferedTile(redDragonTile, true)[0].GetTileActionType());
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromOfferedTile(greenDragonTile, true)[0].GetTileActionType());
+    }
+    [Test]
+    public void GetPossibleActionsFromOfferedTile_Hu_OnNonHonourChow()
+    {
+        TilesContainer tilesContainer = new TilesContainer();
+        for (int i = 4; i <= 6; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, i);
+                tilesContainer.AddTile(tile);
+            }
+        }
+        for (int i = 7; i <= 8; i++)
+        {
+            Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, i);
+            tilesContainer.AddTile(tile);
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            Tile redDragonTile = TileUtils.GetRedDragonTile();
+            tilesContainer.AddTile(redDragonTile);
+        }
+        Tile bamboo6Tile = TileUtils.GetTile(TileTypes.BAMBOO, 6);
+        Tile bamboo9Tile = TileUtils.GetTile(TileTypes.BAMBOO, 9);
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromOfferedTile(bamboo6Tile, true)[0].GetTileActionType());
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromOfferedTile(bamboo9Tile, true)[0].GetTileActionType());
+    }
+    [Test]
+    public void GetPossibleActionsFromDrawnTile_Hu_OnNonHonourEyes()
+    {
+        TilesContainer tilesContainer = new TilesContainer();
+        for (int i = 1; i <= 7; i++)
+        {
+            Tile tile = TileUtils.GetTile(TileTypes.BAMBOO, i);
+            tilesContainer.AddTile(tile);
+        }
+        Tile bamboo1Tile = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile bamboo4Tile = TileUtils.GetTile(TileTypes.BAMBOO, 4);
+        Tile bamboo7Tile = TileUtils.GetTile(TileTypes.BAMBOO, 7);
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromDrawnTile(bamboo1Tile)[0].GetTileActionType());
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromDrawnTile(bamboo4Tile)[0].GetTileActionType());
+        Assert.AreEqual(TileActionTypes.HU, tilesContainer.GetPossibleTileActionsFromDrawnTile(bamboo7Tile)[0].GetTileActionType());
     }
 }
