@@ -214,6 +214,10 @@ public class TurnProcessor
                 {
                     GameStateController.instance.StartDiscardTimerCoroutine();
                 }
+                else
+                {
+                    AutoPlayDiscard();
+                }
                 break;
             case TileActionTypes.HU:
                 GameStateController.instance.gameState = GameStates.PROCESSING;
@@ -272,7 +276,16 @@ public class TurnProcessor
             }
             else
             {
-                ProcessTileActionRequest(null, player);
+
+                List<TileAction> tileActions = player.GetPossibleTileActionsFromOfferedTile(discardedTile, offeringPlayer);
+                if (tileActions.Count == 0)
+                {
+                    ProcessTileActionRequest(null, player);
+                }
+                else
+                {
+                    ProcessTileActionRequest(tileActions[0], player);
+                }
             }
         }
     }
