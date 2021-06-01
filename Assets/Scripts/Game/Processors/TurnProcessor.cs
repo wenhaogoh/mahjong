@@ -81,7 +81,10 @@ public class TurnProcessor
     public void AutoPlayDiscard()
     {
         Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
-        DiscardTile(0, player);
+        int tileCount = player.GetMainTiles().Count();
+        Random random = new System.Random();
+        int randomTileIndexToDiscard = random.Next(0, tileCount - 1);
+        DiscardTile(randomTileIndexToDiscard, player);
     }
     public int GetEastWindPlayerId()
     {
