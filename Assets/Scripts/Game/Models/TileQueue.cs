@@ -31,4 +31,8 @@ public class TileQueue : ITileQueue
     {
         return deque.Count;
     }
+    public bool IsEmpty()
+    {
+        return deque.Count == 0;
+    }
 }

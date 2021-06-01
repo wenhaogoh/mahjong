@@ -9,6 +9,7 @@ public class GameStateController : MonoBehaviour
     public const int PRE_GAME_DELAY = 2;
     public const int AUTO_PLAY_DELAY = 2;
     public const int HU_DELAY = 5;
+    public const int DRAW_DELAY = 5;
     public TilesContainerController player0MainTilesContainerController;
     public TilesContainerController player0FlowerTilesContainerController;
     public TilesContainerController opponent1MainTilesContainerController;
@@ -135,9 +136,13 @@ public class GameStateController : MonoBehaviour
         offerTimerCoroutine = OfferTimerCoroutine();
         StartCoroutine(offerTimerCoroutine);
     }
-    public void StartHuTimerCoroutine(int huPlayerId)
+    public void StartHuCoroutine(int huPlayerId)
     {
-        StartCoroutine(HuTimerCoroutine(huPlayerId));
+        StartCoroutine(HuCoroutine(huPlayerId));
+    }
+    public void StartDrawCoroutine()
+    {
+        StartCoroutine(DrawCoroutine());
     }
     private void ClearTileActionsDisplay()
     {
@@ -211,6 +216,7 @@ public class GameStateController : MonoBehaviour
     private IEnumerator StartRoundCoroutine(int eastWindPlayerId, int diceValueForWhereToStartDrawingTiles)
     {
         tileQueueContainersController.Reset(eastWindPlayerId, diceValueForWhereToStartDrawingTiles);
+        discardedTilesContainerController.RemoveAllDiscardedTiles();
         RefreshAllPlayersTilesDisplay(false, false);
         yield return new WaitForSecondsRealtime(PRE_GAME_DELAY);
         turnProcessor.StartRound();
@@ -226,10 +232,15 @@ public class GameStateController : MonoBehaviour
         yield return new WaitForSeconds(OFFER_TIMER_DURATION);
         ProcessPlayer0TileActionRequest(null);
     }
-    private IEnumerator HuTimerCoroutine(int huPlayerId)
+    private IEnumerator HuCoroutine(int huPlayerId)
     {
         yield return new WaitForSecondsRealtime(HU_DELAY);
-        turnProcessor.NextRound(huPlayerId);
+        turnProcessor.PrepareForNextRoundAfterHu(huPlayerId);
+    }
+    private IEnumerator DrawCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(DRAW_DELAY);
+        turnProcessor.PrepareForNextRoundAfterDraw();
     }
     private IEnumerator AutoPlayCoroutine()
     {
