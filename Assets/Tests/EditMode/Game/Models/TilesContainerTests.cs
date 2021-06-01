@@ -8,7 +8,7 @@ public class TilesContainerTests
     public void AddTile()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile = TileUtils.GetRedDragonTile();
         tilesContainer.AddTile(tile);
         Assert.AreEqual(tile, tilesContainer.GetTiles()[0]);
     }
@@ -17,11 +17,11 @@ public class TilesContainerTests
     {
         TilesContainer tilesContainer1 = new TilesContainer();
         TilesContainer tilesContainer2 = new TilesContainer();
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile1 = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile tile2 = TileUtils.GetRedDragonTile();
         tilesContainer1.AddTile(tile1);
         tilesContainer2.AddTile(tile2);
-        tilesContainer1.AddTiles(tilesContainer1);
+        tilesContainer1.AddTiles(tilesContainer2);
         Assert.AreEqual(2, tilesContainer1.Count());
         Assert.AreEqual(tile1, tilesContainer1.GetTiles()[0]);
         Assert.AreEqual(tile2, tilesContainer1.GetTiles()[1]);
@@ -30,8 +30,8 @@ public class TilesContainerTests
     public void RemoveTile()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile1 = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile tile2 = TileUtils.GetRedDragonTile();
         tilesContainer.AddTile(tile1);
         tilesContainer.AddTile(tile2);
         Assert.AreEqual(tile2, tilesContainer.RemoveTile(1));
@@ -41,8 +41,8 @@ public class TilesContainerTests
     {
         TilesContainer tilesContainer1 = new TilesContainer();
         TilesContainer tilesContainer2 = new TilesContainer();
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile1 = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile tile2 = TileUtils.GetRedDragonTile();
         tilesContainer1.AddTile(tile1);
         tilesContainer1.AddTile(tile2);
         tilesContainer2.AddTile(tile1);
@@ -54,10 +54,8 @@ public class TilesContainerTests
     public void Sort()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile largerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile smallerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        largerTile.SetTileType(TileTypes.FLOWER);
-        smallerTile.SetTileType(TileTypes.BAMBOO);
+        Tile largerTile = TileUtils.GetTile(TileTypes.FLOWER, 1);
+        Tile smallerTile = TileUtils.GetTile(TileTypes.BAMBOO, 1);
         tilesContainer.AddTile(largerTile);
         tilesContainer.AddTile(smallerTile);
         tilesContainer.Sort();
@@ -68,8 +66,8 @@ public class TilesContainerTests
     public void GetLastTile()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile1 = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile tile2 = TileUtils.GetRedDragonTile();
         tilesContainer.AddTile(tile1);
         tilesContainer.AddTile(tile2);
         Assert.AreEqual(tile2, tilesContainer.GetLastTile());
@@ -78,8 +76,8 @@ public class TilesContainerTests
     public void RemoveLastTile()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile1 = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile tile2 = TileUtils.GetRedDragonTile();
         tilesContainer.AddTile(tile1);
         tilesContainer.AddTile(tile2);
         Assert.AreEqual(tile2, tilesContainer.RemoveLastTile());
@@ -89,8 +87,8 @@ public class TilesContainerTests
     public void Count()
     {
         TilesContainer tilesContainer = new TilesContainer();
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile1 = TileUtils.GetTile(TileTypes.BAMBOO, 1);
+        Tile tile2 = TileUtils.GetRedDragonTile();
         tilesContainer.AddTile(tile1);
         tilesContainer.AddTile(tile2);
         Assert.AreEqual(2, tilesContainer.Count());

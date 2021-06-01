@@ -108,9 +108,7 @@ public class TilesContainer
         Tile[] partners = new Tile[5]; // Find CHOW partners of newTile N: N-2, N-1, N (ignored), N+1, N+2 
         for (int i = 0; i < 5; i++)
         {
-            partners[i] = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-            partners[i].SetTileType(triggerTileType);
-            partners[i].SetValue(triggerTile.GetValue() + i - 2);
+            partners[i] = TileUtils.GetTile(triggerTileType, triggerTile.GetValue() + i - 2);
         }
         if (tiles.Contains(partners[0]) && tiles.Contains(partners[1])) // CHOW Sequence: X X N
         {

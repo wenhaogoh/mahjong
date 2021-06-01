@@ -10,89 +10,69 @@ public class TileTests
     [Test]
     public void Tile()
     {
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile.SetTileType(BAMBOO_TILE_TYPE);
-        tile.SetValue(INTEGER_TEN);
+        Tile tile = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TEN);
         Assert.AreEqual(BAMBOO_TILE_TYPE, tile.GetTileType());
         Assert.AreEqual(INTEGER_TEN, tile.GetValue());
     }
     [Test]
     public void IsFlower()
     {
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile.SetTileType(FLOWER_TILE_TYPE);
-        tile.SetValue(INTEGER_TEN);
+        Tile tile = TileUtils.GetTile(FLOWER_TILE_TYPE, INTEGER_TEN);
         Assert.True(tile.IsFlower());
     }
     [Test]
     public void CompareTo_SameObject()
     {
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile.SetTileType(BAMBOO_TILE_TYPE);
-        tile.SetValue(INTEGER_TEN);
+        Tile tile = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TEN);
         Assert.AreEqual(0, tile.CompareTo(tile));
     }
     [Test]
     public void CompareTo_DifferentTileType()
     {
-        Tile smallerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        smallerTile.SetTileType(BAMBOO_TILE_TYPE);
-        Tile largerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        largerTile.SetTileType(FLOWER_TILE_TYPE);
+        Tile smallerTile = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TEN);
+        Tile largerTile = TileUtils.GetTile(FLOWER_TILE_TYPE, INTEGER_TEN);
         Assert.AreEqual(-1, smallerTile.CompareTo(largerTile));
         Assert.AreEqual(1, largerTile.CompareTo(smallerTile));
     }
     [Test]
     public void CompareTo_SameTileType_DifferentValue()
     {
-        Tile smallerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        smallerTile.SetTileType(BAMBOO_TILE_TYPE);
-        smallerTile.SetValue(INTEGER_TEN);
-        Tile largerTile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        largerTile.SetTileType(BAMBOO_TILE_TYPE);
-        largerTile.SetValue(INTEGER_TWENTY);
+        Tile smallerTile = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TEN);
+        Tile largerTile = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TWENTY);
         Assert.AreEqual(-1, smallerTile.CompareTo(largerTile));
         Assert.AreEqual(1, largerTile.CompareTo(smallerTile));
     }
     [Test]
     public void CompareTo_SameTileType_SameValue()
     {
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile1.SetTileType(BAMBOO_TILE_TYPE);
-        tile1.SetValue(INTEGER_TEN);
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile2.SetTileType(BAMBOO_TILE_TYPE);
-        tile2.SetValue(INTEGER_TEN);
+        Tile tile1 = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TEN);
+        Tile tile2 = TileUtils.GetTile(BAMBOO_TILE_TYPE, INTEGER_TEN);
         Assert.AreEqual(0, tile1.CompareTo(tile2));
         Assert.AreEqual(0, tile2.CompareTo(tile1));
     }
     [Test]
     public void Equals_Null()
     {
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile = TileUtils.GetRedDragonTile();
         Assert.False(tile.Equals(null));
     }
     [Test]
     public void Equals_NonTile()
     {
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile = TileUtils.GetRedDragonTile();
         Assert.False(tile.Equals(INTEGER_TEN));
     }
     [Test]
     public void Equals_SameObject()
     {
-        Tile tile = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
+        Tile tile = TileUtils.GetRedDragonTile();
         Assert.True(tile.GetHashCode() == tile.GetHashCode());
     }
     [Test]
     public void GetHashCode_DifferentObjects()
     {
-        Tile tile1 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile1.SetTileType(TileTypes.BAMBOO);
-        tile1.SetValue(INTEGER_TEN);
-        Tile tile2 = (Tile)ScriptableObject.CreateInstance(typeof(Tile));
-        tile2.SetTileType(TileTypes.BAMBOO);
-        tile2.SetValue(INTEGER_TEN);
+        Tile tile1 = TileUtils.GetRedDragonTile();
+        Tile tile2 = TileUtils.GetRedDragonTile();
         Assert.True(tile1.GetHashCode() == tile2.GetHashCode());
     }
 }
