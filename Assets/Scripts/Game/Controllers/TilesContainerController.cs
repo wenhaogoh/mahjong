@@ -56,7 +56,7 @@ public class TilesContainerController : MonoBehaviour
             int difference = transform.childCount - tilesCount;
             for (int i = 0; i < difference; i++)
             {
-                Destroy(transform.GetChild(transform.childCount - 1).gameObject);
+                Destroy(transform.GetChild(transform.childCount - 1 - i).gameObject);
             }
         }
     }
