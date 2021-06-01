@@ -35,7 +35,7 @@ public class TurnProcessor
     }
     public void ExecutePlayer0TileAction(TileAction tileAction)
     {
-        ExecuteTileAction(tileAction, player0);
+        ExecuteTileAction(tileAction, player0, false);
     }
     public void ProcessPlayer0TileActionRequest(TileAction tileAction)
     {
@@ -170,7 +170,7 @@ public class TurnProcessor
         GameStateController.instance.gameState = GameStates.PROCESSING;
         discardingPlayer.DiscardTile(tileIndex, discardedTilesContainer);
         discardingPlayer.SortTiles();
-        GameStateController.instance.RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.RefreshAllPlayersTilesDisplay(false, false);
         GameStateController.instance.DisplayDiscardedTile(discardedTilesContainer.GetLastTile(), discardingPlayer.GetId());
         Tile discardedTile = discardedTilesContainer.GetLastTile();
         Offer(discardedTile, discardingPlayer);
@@ -179,10 +179,10 @@ public class TurnProcessor
     {
         ExecuteTileAction(request.GetTileAction(), request.GetRequestingPlayer(), true);
     }
-    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, bool isFromOffer = false)
+    private void ExecuteTileAction(TileAction tileAction, Player executingPlayer, bool isFromOffer)
     {
         executingPlayer.ExecuteTileAction(tileAction, isFromOffer);
-        GameStateController.instance.RefreshAllPlayersTilesDisplay();
+        GameStateController.instance.RefreshAllPlayersTilesDisplay(false, false);
         switch (tileAction.GetTileActionType())
         {
             case TileActionTypes.KONG:
@@ -198,7 +198,7 @@ public class TurnProcessor
                 break;
             case TileActionTypes.HU:
                 GameStateController.instance.gameState = GameStates.PROCESSING;
-                GameStateController.instance.RefreshAllPlayersTilesDisplay(true);
+                GameStateController.instance.RefreshAllPlayersTilesDisplay(true, false);
                 GameStateController.instance.StartHuTimerCoroutine(executingPlayer.GetId());
                 break;
             default:
