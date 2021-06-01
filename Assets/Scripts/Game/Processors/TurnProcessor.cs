@@ -121,7 +121,7 @@ public class TurnProcessor
     }
     private int RollDice()
     {
-        System.Random random = new System.Random();
+        Random random = new Random();
         return random.Next(1, 6);
     }
     private void SetPlayerWinds(Player player, Winds wind)
