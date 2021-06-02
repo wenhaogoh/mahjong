@@ -72,19 +72,18 @@ public class TurnProcessor
     {
         return this.opponent3.GetFlowerTiles();
     }
-    public void AutoPlayDraw()
+    public void AutoDraw()
     {
         Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
         GameStateController.instance.gameState = GameStates.PROCESSING; // Can only set gameState after mapping gameState to player
         DrawTile(player);
     }
-    public void AutoPlayDiscard()
+    public void AutoDiscard()
     {
-        Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
-        int tileCount = player.GetMainTiles().Count();
-        Random random = new System.Random();
-        int randomTileIndexToDiscard = random.Next(0, tileCount - 1);
-        DiscardTile(randomTileIndexToDiscard, player);
+        Player discardingPlayer = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
+        List<Tile> mainTiles = discardingPlayer.GetMainTiles().GetTiles();
+        int tileIndex = TilesAnalyzer.GetAutoDiscardTileIndex(mainTiles, GetUnavailableTiles());
+        DiscardTile(tileIndex, discardingPlayer);
     }
     public int GetEastWindPlayerId()
     {
@@ -219,7 +218,7 @@ public class TurnProcessor
                 }
                 else
                 {
-                    AutoPlayDiscard();
+                    AutoDiscard();
                 }
                 break;
             case TileActionTypes.HU:
@@ -279,16 +278,10 @@ public class TurnProcessor
             }
             else
             {
-
                 List<TileAction> tileActions = player.GetPossibleTileActionsFromOfferedTile(discardedTile, offeringPlayer);
-                if (tileActions.Count == 0)
-                {
-                    ProcessTileActionRequest(null, player);
-                }
-                else
-                {
-                    ProcessTileActionRequest(tileActions[0], player);
-                }
+                List<Tile> mainTiles = player.GetMainTiles().GetTiles();
+                TileAction selectedTileAction = TilesAnalyzer.AutoSelectTileAction(tileActions, mainTiles, GetUnavailableTiles());
+                ProcessTileActionRequest(selectedTileAction, player);
             }
         }
     }
@@ -305,5 +298,29 @@ public class TurnProcessor
             nextPlayerIndex = 0;
         }
         return players[nextPlayerIndex];
+    }
+    private Dictionary<Tile, int> GetUnavailableTiles()
+    {
+        Dictionary<Tile, int> dict = new Dictionary<Tile, int>();
+        foreach (Tile tile in discardedTilesContainer.GetTiles())
+        {
+            int currentCount = 0;
+            if (dict.TryGetValue(tile, out currentCount))
+            {
+                dict[tile] = currentCount++;
+            }
+        }
+        foreach (Player player in players)
+        {
+            foreach (Tile tile in player.GetFlowerTiles().GetTiles())
+            {
+                int currentCount = 0;
+                if (dict.TryGetValue(tile, out currentCount))
+                {
+                    dict[tile] = currentCount++;
+                }
+            }
+        }
+        return dict;
     }
 }

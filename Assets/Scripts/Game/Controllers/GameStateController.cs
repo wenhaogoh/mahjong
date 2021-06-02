@@ -244,8 +244,8 @@ public class GameStateController : MonoBehaviour
     }
     private IEnumerator AutoPlayCoroutine()
     {
-        turnProcessor.AutoPlayDraw();
+        turnProcessor.AutoDraw();
         yield return new WaitForSecondsRealtime(AUTO_PLAY_DELAY);
-        turnProcessor.AutoPlayDiscard();
+        turnProcessor.AutoDiscard();
     }
 }

@@ -4,6 +4,14 @@ using System;
 
 public class TilesAnalyzer
 {
+    public static int GetAutoDiscardTileIndex(List<Tile> mainTiles, Dictionary<Tile, int> unavailableTiles)
+    {
+        return 0;
+    }
+    public static TileAction AutoSelectTileAction(List<TileAction> tileActions, List<Tile> mainTiles, Dictionary<Tile, int> unavailableTiles)
+    {
+        return null;
+    }
     public static List<TileAction> GetPossibleTileActionsFromDrawnTile(List<Tile> mainTiles, Tile drawnTile)
     {
         List<TileAction> actions = new List<TileAction>();
