@@ -81,7 +81,10 @@ public class TurnProcessor
     public void AutoPlayDiscard()
     {
         Player player = players[MapperUtils.MapGameStateToPlayerId(GameStateController.instance.gameState)];
-        DiscardTile(0, player);
+        int tileCount = player.GetMainTiles().Count();
+        Random random = new System.Random();
+        int randomTileIndexToDiscard = random.Next(0, tileCount - 1);
+        DiscardTile(randomTileIndexToDiscard, player);
     }
     public int GetEastWindPlayerId()
     {
@@ -214,6 +217,10 @@ public class TurnProcessor
                 {
                     GameStateController.instance.StartDiscardTimerCoroutine();
                 }
+                else
+                {
+                    AutoPlayDiscard();
+                }
                 break;
             case TileActionTypes.HU:
                 GameStateController.instance.gameState = GameStates.PROCESSING;
@@ -272,7 +279,16 @@ public class TurnProcessor
             }
             else
             {
-                ProcessTileActionRequest(null, player);
+
+                List<TileAction> tileActions = player.GetPossibleTileActionsFromOfferedTile(discardedTile, offeringPlayer);
+                if (tileActions.Count == 0)
+                {
+                    ProcessTileActionRequest(null, player);
+                }
+                else
+                {
+                    ProcessTileActionRequest(tileActions[0], player);
+                }
             }
         }
     }
